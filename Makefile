@@ -13,15 +13,13 @@
 NAME = ft_ls
 SRC = ./ft_ls.c
 OBJECTS = ./ft_ls.o
-INC = 
+INC = ./
 
 all: $(NAME)
 	
 $(NAME):
 	make -C ./libft
-	gcc -c -Wextra -Werror -Wall  $(SRC) -I $(INC) .libft/libft.a
-	ar rc $(NAME) $(OBJECTS)
-	ranlib $(NAME)
+	gcc -Wextra -Werror -Wall -I $(INC) $(SRC) -L libft/ -lft -o $(NAME)
 
 clean:
 	rm -f $(OBJECTS)
