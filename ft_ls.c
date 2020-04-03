@@ -1,50 +1,51 @@
 #include<stdio.h>
 #include "./libft/libft.h"
 #include "ft_ls.h"
-
-/*void    readfunct(DIR *dir)
+void  create_arr(char *path)
 {
-    struct stat buf;
-    struct dirent *test;
+ char *filearr[sizeof(t_file)];
+  struct dirent *test2;
+  //struct stat buf;
+  DIR *dir;
+  int i;
 
-    errno = 0;
-    if(!(test = readdir(dir)))
+  i = 0;
+  dir = opendir(path);
+  *filearr = NULL;
+    if(!(dir))
     {
-        if (errno != 0)
-        {
-            perror("");
-            exit(2);
-        }
-        
+        ft_printf("ft_ls: cannot access '%s' : ", path);
+        perror("");
+        exit(1);
     }
-    stat(test->d_name, &buf);
-   // if(test == NULL)
-     //   return(0);
- //   else
+    while((test2 = readdir(dir)) != NULL)
     {
-       if(S_ISDIR(buf.st_mode))
-       {
-           readfunct(dir);
-        printf("directory%s\n", test->d_name);
-       }
-       else
-       {   //  printf("directory%s\n", test->d_name);
-        readfunct(dir);
-        printf("%s\n", test->d_name);
-       }
+      filearr[i] = test2->d_name;
+      i++;
+     //ft_printf("%s\n", test2->d_name);
     }
-    return(0);
+    filearr[i] = NULL;
+    i = 0;
+   while(filearr[i] != NULL)
+   {
+      ft_printf("%s ", filearr[i]);
+      i++;
+   }
+   ft_printf("\n");
 
-}*/
 
-int    testfunc(char *pathname)
+
+
+}
+
+int    testfunc(char *basepath)
 {
     struct dirent *test;
     struct stat buf;
     char *path;
     DIR *dir;
 
-  path = pathname;
+  path = basepath;
   dir = opendir(path);
     if(!(dir))
     {
@@ -52,12 +53,13 @@ int    testfunc(char *pathname)
         perror("");
         exit(1);
     }
-    printf("jo %s\n", pathname);
+    //ft_printf("jo %s\n", pathname);
+    create_arr(path);
     while((test = readdir(dir)) != NULL)
     {
      
-     path = ft_strjoin(pathname, test->d_name); // malloc?
-     ft_printf("p = %s\n", path);
+     path = ft_strjoin(basepath, test->d_name); // malloc?
+    // ft_printf("p = %s\n", path);
       
       if(stat(path, &buf) == -1)
         {
@@ -69,15 +71,17 @@ int    testfunc(char *pathname)
         
         if(S_ISDIR(buf.st_mode) && (ft_strcmp(test->d_name, ".") != 0 && ft_strcmp(test->d_name, "..") != 0))
         {
-          printf("hii %s\n", test->d_name);
+         // ft_printf("hii %s\n", test->d_name);
        path = ft_strjoin(path, "/");
+       //create_arr(path);
           //printf("path %s\n", path);
           testfunc(path);
          
        //testfunc(test->d_name, NULL);
         }
-        //else
-         //ft_printf("%s\n", test->d_name);
+        //
+      //  else
+        // ft_printf("%s\n", test->d_name);
 
     }
     closedir(dir);
