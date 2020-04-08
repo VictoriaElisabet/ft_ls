@@ -27,12 +27,9 @@
   }
 
 }*/
-t_file *set_file_struct(t_file *file, struct dirent *new)
+void set_file_struct(t_file *file, struct dirent *fileinfo)
 {
-    
-    file->filename = new->d_name;
-    return(file);
-    
+    file->filename = fileinfo->d_name;
 }
 
 void create_arr(char *path, int count)
@@ -40,12 +37,13 @@ void create_arr(char *path, int count)
   t_file **filearr;
   struct dirent *test3;
   //struct stat buf;
-  t_file file;
+  //t_file file;
   DIR *dir;
   int i;
 
   i = 0;
   filearr = (t_file**)malloc(count * sizeof(t_file*) + 1);
+  
   dir = opendir(path);
     if(!(dir))
     {
@@ -57,20 +55,18 @@ void create_arr(char *path, int count)
 
     while((test3 = readdir(dir)) != NULL)
     {
-      //printf("%s %d", test2->d_name, i);
+      //printf("%s %d", test2->d_name, i)
      filearr[i] = (t_file*)malloc(sizeof(t_file));
-     
-     filearr[i] = set_file_struct(&file, test3);
+     set_file_struct(filearr[i], test3);
+     i++;
    // ft_printf("%s %d", filearr[i]->filename, i);
-      i++;
     }
-    //filearr[i]= NULL;
+    filearr[i]= NULL;
     //sort_arr(filearr);
     i = 0;
-    //ft_printf("%s ", filearr[i]->filename);
    while(filearr[i] != NULL)
    {
-     ft_printf("%s %d", filearr[i]->filename, i);
+     ft_printf("%s ", filearr[i]->filename);
       i++;
    }
    ft_printf("\n");
