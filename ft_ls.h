@@ -19,6 +19,17 @@ typedef struct	s_file
 	//void	*next;
 }				t_file;
 
+typedef struct	s_flags
+{
+    int l_flag;
+    int R_flag;
+    int r_flag;
+    int t_flag;
+    int a_flag;
+	//void	*next;
+}				t_flags;
+
+
 
 #include <dirent.h>
 #include <sys/types.h>
