@@ -1,6 +1,18 @@
-#include<stdio.h>
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   ft_ls.c                                            :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: vgrankul <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2019/10/22 11:28:19 by vgrankul          #+#    #+#             */
+/*   Updated: 2019/10/31 13:49:20 by vgrankul         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "./libft/libft.h"
 #include "ft_ls.h"
+#include <stdio.h>
 
 void sort_arr_name(t_file **arr)
 {
@@ -26,6 +38,7 @@ void sort_arr_name(t_file **arr)
     i++;
   }
 }
+
 char *set_time(long int time)
 {
   char *time_str;
@@ -38,6 +51,7 @@ char *set_time(long int time)
   return(time_str);
 
 }
+
 void set_file_struct(t_file *file, struct dirent *fileinfo, struct stat *buf)
 {
     struct passwd *userid;
@@ -54,11 +68,10 @@ void set_file_struct(t_file *file, struct dirent *fileinfo, struct stat *buf)
     ft_printf("%o %d %s %s %ld %s %s\n", buf->st_mode & 0777, file->links, file->uid, file->guid, file->size, file->time, file->filename);
     free(file->time);
 }
+
 int  count_files(char *path)
 {
- //char *filearr[26];
   struct dirent *test2;
-  //struct stat buf;
   DIR *dir;
   int i;
 
@@ -70,31 +83,12 @@ int  count_files(char *path)
         perror("");
         exit(1);
     }
-    //ft_printf("%s:\n", path);
-
     while((test2 = readdir(dir)) != NULL)
     {
-      //printf("%s %d", test2->d_name, i);
-     //filearr[i] = test2->d_name;
-     //ft_printf("%s %d", filearr[i], i);
       i++;
     }
     closedir(dir);
     return(i);
-    //create_arr(i);
-    //filearr[i]= NULL;
-    /*sort_arr(filearr);
-    i = 0;
-   while(filearr[i] != NULL)
-   {
-      ft_printf("%s ", filearr[i]);
-      i++;
-   }
-   ft_printf("\n");*/
-
-
-
-
 }
 
 void create_arr(char *path)
@@ -102,7 +96,6 @@ void create_arr(char *path)
   t_file **filearr;
   struct dirent *test3;
   struct stat buf;
-  //t_file file;
   DIR *dir;
   int i;
   char *tmp;
@@ -117,24 +110,20 @@ void create_arr(char *path)
         perror("");
         exit(1);
     }
-    //count_files(dir);
     ft_printf("%s:\n", path);
   filearr = (t_file**)malloc(count * sizeof(t_file*) + 1);
   
     while((test3 = readdir(dir)) != NULL)
     {
-      //printf("%s %d", test2->d_name, i)
       tmp = ft_strjoin(path, test3->d_name);
       stat(tmp, &buf);
      filearr[i] = (t_file*)malloc(sizeof(t_file));
      set_file_struct(filearr[i], test3, &buf);
      free(tmp);
      i++;
-   // ft_printf("%s %d", filearr[i]->filename, i);
     }
     closedir(dir);
     filearr[i]= NULL;
-    //free(path);
     sort_arr_name(filearr);
     i = 0;
    while(filearr[i] != NULL)
@@ -161,8 +150,7 @@ int    testfunc(char *basepath)
     char *path;
     DIR *dir;
 
- // path = basepath;
-  dir = opendir(basepath);
+    dir = opendir(basepath);
   
     if(!(dir))
     {
@@ -173,39 +161,23 @@ int    testfunc(char *basepath)
     create_arr(basepath);
     while((test = readdir(dir)) != NULL)
     {
-     path = ft_strjoin(basepath, test->d_name); // malloc?
-   //  ft_printf("p = %s\n", path);
-      
+      path = ft_strjoin(basepath, test->d_name); 
       if(stat(path, &buf) == -1)
         {
           perror("");
           exit(1);
         }
-      
-      //printf("%s %d\n", test->d_name, buf.st_mode);
-        
         if(S_ISDIR(buf.st_mode) && (ft_strcmp(test->d_name, ".") != 0 && ft_strcmp(test->d_name, "..") != 0))
         {
-      
-       path = ft_strjoin(path, "/");
-
-       //ft_printf("PATH %s\n", path);
-       //create_arr(path);
-          
+          path = ft_strjoin(path, "/");
           testfunc(path);
-         
-       //testfunc(test->d_name, NULL);
         }
-        //
-      //  else
-        // ft_printf("%s\n", test->d_name);
         free(path);
-
     }
     closedir(dir);
     return (0);
-
 }
+
 void set_flag_struct(t_flags *new)
 {
   new->l_flag = 0;
@@ -213,7 +185,6 @@ void set_flag_struct(t_flags *new)
   new->a_flag = 0;
   new->r_flag = 0;
   new->t_flag = 0;
-
 }
 
 int main(int argc, char **argv)
@@ -252,11 +223,10 @@ int main(int argc, char **argv)
           }
          
         }
-        
         else
         {
            ft_printf("l %d R %d r %d t %d a %d %s\n", new.l_flag, new.R_flag, new.r_flag, new.t_flag, new.a_flag, argv[i]);
-          testfunc(argv[i]);
+            testfunc(argv[i]);
         }
         i++;
         
