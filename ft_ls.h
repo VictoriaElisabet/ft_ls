@@ -15,6 +15,12 @@
 
 typedef struct	s_file
 {
+    char *permissions;
+    int links;
+    char *uid;
+    char *guid;
+    int size;
+    char *time;
     char *filename;
 	//void	*next;
 }				t_file;
@@ -38,6 +44,9 @@ typedef struct	s_flags
 #include <sys/stat.h>
 #include <unistd.h>
 #include <errno.h>
+#include <pwd.h>
+#include <grp.h>
+#include <time.h>
 
 
 #endif

@@ -2,7 +2,7 @@
 #include "./libft/libft.h"
 #include "ft_ls.h"
 
-/*void sort_arr(t_file **arr)
+void sort_arr_name(t_file **arr)
 {
   int i;
   int j;
@@ -15,64 +15,46 @@
     j = i;
     while(arr[j + 1] != NULL)
     {
-      if(ft_strcmp(arr[i], arr[j + 1]) > 0)
+      if(ft_strcmp(arr[i]->filename, arr[j + 1]->filename) > 0)
       {
-       tmp = arr[i];
-        arr[i] = arr[j + 1];
-        arr[j + 1] = tmp; 
+       tmp = arr[i]->filename;
+        arr[i]->filename = arr[j + 1]->filename;
+        arr[j + 1]->filename = tmp; 
       }
       j++;
     }
     i++;
   }
-
-}*/
-void set_file_struct(t_file *file, struct dirent *fileinfo)
+}
+char *set_time(long int time)
 {
+  char *time_str;
+
+  if(!(time_str = ft_strsub(ctime(&time), 4, 12)))
+  {
+    ft_putstr("Malloc failed or errno ENOMEM?");
+    exit(1);
+  }
+  return(time_str);
+
+}
+void set_file_struct(t_file *file, struct dirent *fileinfo, struct stat *buf)
+{
+    struct passwd *userid;
+    struct group *groupid;
+    userid = getpwuid(buf->st_uid);
+    groupid = getgrgid(buf->st_gid);
+    file->links = buf->st_nlink;
+    file->uid = userid->pw_name;
+    file->guid = groupid->gr_name;
+    file->size = buf->st_size;
+    file->time = set_time(buf->st_mtime);
     file->filename = fileinfo->d_name;
+
+    ft_printf("%o %d %s %s %ld %s %s\n", buf->st_mode & 0777, file->links, file->uid, file->guid, file->size, file->time, file->filename);
+    free(file->time);
 }
-
-void create_arr(char *path, int count)
-{
-  t_file **filearr;
-  struct dirent *test3;
-  //struct stat buf;
-  //t_file file;
-  DIR *dir;
-  int i;
-
-  i = 0;
-  filearr = (t_file**)malloc(count * sizeof(t_file*) + 1);
-  
-  dir = opendir(path);
-    if(!(dir))
-    {
-        ft_printf("ft_ls: cannot access '%s' : ", path);
-        perror("");
-        exit(1);
-    }
-    ft_printf("%s:\n", path);
-
-    while((test3 = readdir(dir)) != NULL)
-    {
-      //printf("%s %d", test2->d_name, i)
-     filearr[i] = (t_file*)malloc(sizeof(t_file));
-     set_file_struct(filearr[i], test3);
-     i++;
-   // ft_printf("%s %d", filearr[i]->filename, i);
-    }
-    filearr[i]= NULL;
-    //sort_arr(filearr);
-    i = 0;
-   while(filearr[i] != NULL)
-   {
-     ft_printf("%s ", filearr[i]->filename);
-      i++;
-   }
-   ft_printf("\n");
-
-}
-void  count_files(char *path)
+int  count_files(char *path)
 {
  //char *filearr[26];
   struct dirent *test2;
@@ -97,7 +79,9 @@ void  count_files(char *path)
      //ft_printf("%s %d", filearr[i], i);
       i++;
     }
-    create_arr(path, i);
+    closedir(dir);
+    return(i);
+    //create_arr(i);
     //filearr[i]= NULL;
     /*sort_arr(filearr);
     i = 0;
@@ -112,6 +96,63 @@ void  count_files(char *path)
 
 
 }
+
+void create_arr(char *path)
+{
+  t_file **filearr;
+  struct dirent *test3;
+  struct stat buf;
+  //t_file file;
+  DIR *dir;
+  int i;
+  char *tmp;
+  int count;
+
+  i = 0;
+  count = count_files(path);
+  dir = opendir(path);
+    if(!(dir))
+    {
+        ft_printf("ft_ls: cannot access '%s' : ", path);
+        perror("");
+        exit(1);
+    }
+    //count_files(dir);
+    ft_printf("%s:\n", path);
+  filearr = (t_file**)malloc(count * sizeof(t_file*) + 1);
+  
+    while((test3 = readdir(dir)) != NULL)
+    {
+      //printf("%s %d", test2->d_name, i)
+      tmp = ft_strjoin(path, test3->d_name);
+      stat(tmp, &buf);
+     filearr[i] = (t_file*)malloc(sizeof(t_file));
+     set_file_struct(filearr[i], test3, &buf);
+     free(tmp);
+     i++;
+   // ft_printf("%s %d", filearr[i]->filename, i);
+    }
+    closedir(dir);
+    filearr[i]= NULL;
+    //free(path);
+    sort_arr_name(filearr);
+    i = 0;
+   while(filearr[i] != NULL)
+   {
+     ft_printf("%s ", filearr[i]->filename);
+      i++;
+   }
+   ft_printf("\n");
+   i = 0;
+   while(filearr[i] != NULL)
+   {
+   free(filearr[i]);
+   i++;
+   }
+   free(filearr);
+
+}
+
 
 int    testfunc(char *basepath)
 {
@@ -129,7 +170,7 @@ int    testfunc(char *basepath)
         perror("");
         exit(1);
     }
-    count_files(basepath);
+    create_arr(basepath);
     while((test = readdir(dir)) != NULL)
     {
      path = ft_strjoin(basepath, test->d_name); // malloc?
@@ -145,8 +186,10 @@ int    testfunc(char *basepath)
         
         if(S_ISDIR(buf.st_mode) && (ft_strcmp(test->d_name, ".") != 0 && ft_strcmp(test->d_name, "..") != 0))
         {
+      
        path = ft_strjoin(path, "/");
-       //ft_printf("%s\n", path);
+
+       //ft_printf("PATH %s\n", path);
        //create_arr(path);
           
           testfunc(path);
@@ -156,6 +199,7 @@ int    testfunc(char *basepath)
         //
       //  else
         // ft_printf("%s\n", test->d_name);
+        free(path);
 
     }
     closedir(dir);
@@ -202,6 +246,8 @@ int main(int argc, char **argv)
               new.t_flag = 1;
             if(argv[i][j] == 'a')
               new.a_flag = 1;
+            else
+              break ;
             j++;
           }
          
