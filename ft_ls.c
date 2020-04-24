@@ -64,8 +64,8 @@ void set_file_struct(t_file *file, struct dirent *fileinfo, struct stat *buf)
     file->size = buf->st_size;
     file->time = set_time(buf->st_mtime);
     file->filename = fileinfo->d_name;
-
-    //ft_printf("%o %d %s %s %ld %s %s\n", buf->st_mode & 0777, file->links, file->uid, file->guid, file->size, file->time, file->filename);
+   // ft_printf("%o %d %s %s %ld %s %s\n", buf->st_mode & 0777, file->links, file->uid, file->guid, file->size, file->time, file->filename);
+    
     free(file->time);
 }
 
@@ -112,13 +112,10 @@ void create_arr(char *path)
     }
     ft_printf("%s:\n", path);
     filearr = (t_file**)malloc(count * sizeof(t_file*) + 1);
-  
     while((test3 = readdir(dir)) != NULL)
     {
       tmp = ft_strjoin(path, test3->d_name);
-      stat(tmp, &buf);
-      //if(S_ISLNK(buf.st_mode))
-        //lstat(tmp, &buf);
+      lstat(tmp, &buf);
      filearr[i] = (t_file*)malloc(sizeof(t_file));
      set_file_struct(filearr[i], test3, &buf);
      free(tmp);
@@ -127,10 +124,11 @@ void create_arr(char *path)
     closedir(dir);
     filearr[i]= NULL;
     sort_arr_name(filearr);
+    
     i = 0;
    while(filearr[i] != NULL)
    {
-     ft_printf("%s ", filearr[i]->filename);
+     ft_printf("%o %d %s %s %ld %s %s\n", buf.st_mode & 0777, filearr[i]->links, filearr[i]->uid, filearr[i]->guid, filearr[i]->size, filearr[i]->time, filearr[i]->filename);
       i++;
    }
    ft_printf("\n");
@@ -143,13 +141,23 @@ void create_arr(char *path)
    free(filearr);
 
 }
+int check_path(char *path)
+{
+  int len;
 
+  len = ft_strlen(path);
+  if(path[len - 1] == '/')
+    return(0);
+  else
+    return(-1);
+}
 
 int    testfunc(char *basepath)
 {
     struct dirent *test;
     struct stat buf;
     char *path;
+    char *tmp;
     DIR *dir;
     
     dir = opendir(basepath);
@@ -168,13 +176,13 @@ int    testfunc(char *basepath)
           perror("");
           exit(1);
         }
-        free(path);
-        if(S_ISDIR(buf.st_mode) && (ft_strcmp(test->d_name, ".") != 0 && ft_strcmp(test->d_name, "..") != 0))
+        if(S_ISDIR(buf.st_mode) && (ft_strcmp(test->d_name, ".") != 0 && ft_strcmp(test->d_name, "..") != 0 && ft_strcmp(test->d_name, ".git") != 0))
         {
-          path = ft_strjoin(path, "/");
-          testfunc(path);
-          free(path);
+            tmp = ft_strjoin(path, "/");
+            testfunc(tmp);
+            free(tmp);
         }
+        free(path);
         
     }
     closedir(dir);
@@ -230,7 +238,7 @@ int main(int argc, char **argv)
         else
         {
            ft_printf("l %d R %d r %d t %d a %d %s\n", new.l_flag, new.R_flag, new.r_flag, new.t_flag, new.a_flag, argv[i]);
-           if(!(strchr(argv[i], '/')))
+           if(check_path(argv[i]) != 0)
            {
              tmp = ft_strjoin(argv[i], "/");
              testfunc(tmp);
