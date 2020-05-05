@@ -11,15 +11,15 @@
 # **************************************************************************** #
 
 NAME = ft_ls
-SRC = ./ft_ls.c
-OBJECTS = ./ft_ls.o
+SRC = ./ft_ls.c ./create_list.c
+OBJECTS = ./ft_ls.o ./create_list.o
 INC = ./
 
 all: $(NAME)
 	
 $(NAME):
 	make -C ./libft
-	gcc -Wextra -Werror -Wall -I $(INC) $(SRC) -L libft/ -lft -o $(NAME)
+	gcc -Wextra -Werror -Wall -I $(INC) $(SRC) -L libft/ -lft -o $(NAME) -ggdb3
 
 clean:
 	rm -f $(OBJECTS)

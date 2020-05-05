@@ -13,6 +13,12 @@
 #ifndef FT_LS_H
 # define FT_LS_H
 
+typedef struct s_list
+{
+    char *path;
+    struct s_list *next;
+}              t_list;
+
 typedef struct	s_file
 {
     char *permissions;
@@ -36,6 +42,12 @@ typedef struct	s_flags
 }				t_flags;
 
 
+void            print_list(t_list *head);
+
+t_list         *create_path_list(t_list **head, char *path);
+t_list         *ft_create_elem(char *path);
+void       append(t_list *head, char *path);
+void    push(t_list **head, char *path);
 
 #include <dirent.h>
 #include <sys/types.h>

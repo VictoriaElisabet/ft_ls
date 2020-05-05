@@ -65,7 +65,6 @@ char			*ft_add_zero_diouxx(char *str, int len, int preclen);
 char			*ft_set_space(char *str, t_format_struct *new, char sign);
 char			*ft_set_sign(char *str, char sign);
 char			*ft_copy_string(char *str, int len);
-char			*ft_string_tolower(char *str);
 char			*ft_add_zero_float(char *str, int len, int dotlen, int i);
 char			*ft_copy_string_float(char *str, t_format_struct *new,
 				int dotlen);

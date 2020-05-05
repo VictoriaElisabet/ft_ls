@@ -152,93 +152,25 @@ int check_path(char *path)
   else
     return(-1);
 }
-void  get_path_list(t_list **head, char *basepath)
-{
-  DIR *dir;
-  struct dirent *list;
-  struct stat buf;
-  char *tmp;
-  char *path;
- // t_list *test;
-
-  dir = opendir(basepath);
-  if(!(dir))
-  {
-    ft_printf("ft_ls: cannot access '%s' : ", basepath);
-    perror("");
-    exit(1);
-  }
-  while((list = readdir(dir)) != NULL)
-  {
-    path = ft_strjoin(basepath, list->d_name); 
-    if(stat(path, &buf) == -1)
-    {
-        perror("");
-        exit(1);
-    }
-        // ft_printf("%s %s \n", path, ctime(&buf.st_ctime));
-    if(S_ISDIR(buf.st_mode) && (ft_strcmp(list->d_name, ".") != 0 && ft_strcmp(list->d_name, "..") != 0 && ft_strcmp(list->d_name, ".git") != 0))
-    {
-      tmp = ft_strjoin(path, "/");
-      //*head = create_path_list(head, tmp);
-      push(head, tmp);
-    
-     /* while(test->next != NULL)
-      {
-        
-        test = test->next;
-      }
-      test->next = ft_create_elem(tmp);*/
- // ft_printf("te %s ", temp->path);
-      //temp->next = ft_create_elem(tmp);
-	     //else
-		     // append(*head, tmp);
-        
-         //emp->next = ft_create_elem(tmp);
-         
-    free(tmp);
-    }
-    free(path);
-  }
-  //print_list(*head);
-  closedir(dir);
-}
-void  destroy_list(t_list *head)
-{
-   t_list *tmp;
-
-   while (head != NULL)
-    {
-       tmp = head;
-       head = head->next;
-       free(tmp->path);
-       free(tmp);
-    }
-}
 
 int    testfunc(char *basepath)
 {
-    /*struct dirent *test;
+    struct dirent *test;
     struct stat buf;
     char *path;
     char *tmp;
     DIR *dir;
-    int i;*/
-    t_list *head;
-
-    head = NULL;
-    //head = ft_create_elem(basepath);
-    create_arr(basepath);
-    //if list head som måste den förstöras först.
-    get_path_list(&head, basepath);
-    print_list(head);
-    destroy_list(head);
-   /* while(current->next != NULL)
+    //char **pathlist;
+  
+    dir = opendir(basepath);
+    if(!(dir))
     {
-      testfunc(current->path);
-      current = current->next;
-    }*/
-   /* while((pathlist[i]!= NULL)
+        ft_printf("ft_ls: cannot access '%s' : ", basepath);
+        perror("");
+        exit(1);
+    }
+    create_arr(basepath);
+    while((test = readdir(dir)) != NULL)
     {
       path = ft_strjoin(basepath, test->d_name); 
      
@@ -257,7 +189,7 @@ int    testfunc(char *basepath)
         free(path);
         
     }
-    closedir(dir);*/
+    closedir(dir);
     //t_printf("%d", i);
     return (0);
 }

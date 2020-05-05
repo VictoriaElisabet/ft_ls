@@ -59,6 +59,8 @@ char		*ft_uitoa(unsigned long long n);
 char		*ft_octal(long long n);
 char		*ft_hex(long long n);
 char		**ft_strsplit(char const *s, char c);
+char	    *ft_string_tolower(char *str);
+char	    *ft_string_toupper(char *str);
 
 int			ft_strcmp(const char *s1, const char *s2);
 int			ft_strncmp(const char *s1, const char *s2, size_t n);

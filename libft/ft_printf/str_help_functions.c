@@ -70,19 +70,6 @@ char	*ft_copy_string_float(char *str, t_format_struct *new, int dotlen)
 	return (str1);
 }
 
-char	*ft_string_tolower(char *str)
-{
-	int i;
-
-	i = 0;
-	while (str[i] != '\0')
-	{
-		str[i] = ft_tolower(str[i]);
-		i++;
-	}
-	return (str);
-}
-
 int		format_strlen(const char *format)
 {
 	int i;
