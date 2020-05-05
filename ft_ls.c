@@ -67,7 +67,7 @@ void set_file_struct(t_file *file, struct dirent *fileinfo, struct stat *buf)
     file->filename = fileinfo->d_name;
    // ft_printf("%o %d %s %s %ld %s %s\n", buf->st_mode & 0777, file->links, file->uid, file->guid, file->size, file->time, file->filename);
     
-    free(file->time);
+    //free(file->time);
 }
 
 int  count_files(char *path)
@@ -129,19 +129,22 @@ void create_arr(char *path)
     i = 0;
    while(filearr[i] != NULL)
    {
-     ft_printf("%o %d %s %s %ld %s %s\n", buf.st_mode & 0777, filearr[i]->links, filearr[i]->uid, filearr[i]->guid, filearr[i]->size, filearr[i]->time, filearr[i]->filename);
+      ft_printf("%o %d %s %s %ld %s %s\n", buf.st_mode & 0777, filearr[i]->links, filearr[i]->uid, filearr[i]->guid, filearr[i]->size, filearr[i]->time, filearr[i]->filename);
       i++;
+     //free(filearr[i]->time);
    }
    ft_printf("\n");
    i = 0;
    while(filearr[i] != NULL)
    {
+     free(filearr[i]->time);
    free(filearr[i]);
    i++;
    }
    free(filearr);
 
 }
+
 int check_path(char *path)
 {
   int len;
@@ -152,6 +155,7 @@ int check_path(char *path)
   else
     return(-1);
 }
+
 void  get_path_list(t_list **head, char *basepath)
 {
   DIR *dir;
@@ -159,7 +163,6 @@ void  get_path_list(t_list **head, char *basepath)
   struct stat buf;
   char *tmp;
   char *path;
- // t_list *test;
 
   dir = opendir(basepath);
   if(!(dir))
@@ -176,45 +179,30 @@ void  get_path_list(t_list **head, char *basepath)
         perror("");
         exit(1);
     }
-        // ft_printf("%s %s \n", path, ctime(&buf.st_ctime));
     if(S_ISDIR(buf.st_mode) && (ft_strcmp(list->d_name, ".") != 0 && ft_strcmp(list->d_name, "..") != 0 && ft_strcmp(list->d_name, ".git") != 0))
     {
       tmp = ft_strjoin(path, "/");
-      //*head = create_path_list(head, tmp);
       push(head, tmp);
-    
-     /* while(test->next != NULL)
-      {
-        
-        test = test->next;
-      }
-      test->next = ft_create_elem(tmp);*/
- // ft_printf("te %s ", temp->path);
-      //temp->next = ft_create_elem(tmp);
-	     //else
-		     // append(*head, tmp);
-        
-         //emp->next = ft_create_elem(tmp);
-         
-    free(tmp);
+      free(tmp);
     }
     free(path);
   }
-  //print_list(*head);
   closedir(dir);
 }
+
 void  destroy_list(t_list *head)
 {
    t_list *tmp;
-
    while (head != NULL)
     {
+      
        tmp = head;
        head = head->next;
        free(tmp->path);
        free(tmp);
     }
 }
+
 t_list  *sort_path_list(t_list *head)
 {
 	t_list	*begin;
@@ -238,58 +226,23 @@ t_list  *sort_path_list(t_list *head)
 		head = head->next;
 	}
 	return (begin);
-
 }
 
-int    testfunc(char *basepath)
+void    testfunc(char *basepath)
 {
-    /*struct dirent *test;
-    struct stat buf;
-    char *path;
-    char *tmp;
-    DIR *dir;
-    int i;*/
-    //ft_printf("path %s\n", basepath);
-    t_list *head;
+  t_list *head;
+  t_list *sort;
 
-    head = NULL;
-
-    //head = ft_create_elem(basepath);
-    create_arr(basepath);
-    //if list head som måste den förstöras först.
-    get_path_list(&head, basepath);
-    head = sort_path_list(head);
-    //print_list(head);
-
-    
-   while(head != NULL)
-    {
-      testfunc(head->path);
-      head = head->next;
-    }
-    destroy_list(head);
-   /* while((pathlist[i]!= NULL)
-    {
-      path = ft_strjoin(basepath, test->d_name); 
-     
-      if(stat(path, &buf) == -1)
-        {
-          perror("");
-          exit(1);
-        }
-        // ft_printf("%s %s \n", path, ctime(&buf.st_ctime));
-        if(S_ISDIR(buf.st_mode) && (ft_strcmp(test->d_name, ".") != 0 && ft_strcmp(test->d_name, "..") != 0 && ft_strcmp(test->d_name, ".git") != 0))
-        {
-            tmp = ft_strjoin(path, "/");
-            testfunc(tmp);
-            free(tmp);
-        }
-        free(path);
-        
-    }
-    closedir(dir);*/
-    //t_printf("%d", i);
-    return (0);
+  head = NULL; 
+  create_arr(basepath);
+  get_path_list(&head, basepath);
+  sort = sort_path_list(head);
+  while(sort != NULL)
+  {
+    testfunc(sort->path);
+    sort = sort->next;
+  }
+  destroy_list(head);
 }
 
 void set_flag_struct(t_flags *new)
