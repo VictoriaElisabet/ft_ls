@@ -215,6 +215,31 @@ void  destroy_list(t_list *head)
        free(tmp);
     }
 }
+t_list  *sort_path_list(t_list *head)
+{
+	t_list	*begin;
+	t_list	*current;
+  char *tmp;
+
+	begin = head;
+	while (head)
+	{
+		current = head->next;
+		while (current)
+		{
+			if (ft_strcmp(head->path, current->path) > 0)
+			{
+				tmp = head->path;
+        head->path = current->path;
+        current->path = tmp; 
+			}
+			current = current->next;
+		}
+		head = head->next;
+	}
+	return (begin);
+
+}
 
 int    testfunc(char *basepath)
 {
@@ -224,20 +249,25 @@ int    testfunc(char *basepath)
     char *tmp;
     DIR *dir;
     int i;*/
+    //ft_printf("path %s\n", basepath);
     t_list *head;
 
     head = NULL;
+
     //head = ft_create_elem(basepath);
     create_arr(basepath);
     //if list head som måste den förstöras först.
     get_path_list(&head, basepath);
-    print_list(head);
-    destroy_list(head);
-   /* while(current->next != NULL)
+    head = sort_path_list(head);
+    //print_list(head);
+
+    
+   while(head != NULL)
     {
-      testfunc(current->path);
-      current = current->next;
-    }*/
+      testfunc(head->path);
+      head = head->next;
+    }
+    destroy_list(head);
    /* while((pathlist[i]!= NULL)
     {
       path = ft_strjoin(basepath, test->d_name); 
