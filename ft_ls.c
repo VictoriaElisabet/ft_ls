@@ -18,7 +18,7 @@ void sort_arr_name(t_file **arr)
 {
   int i;
   int j;
-  char *tmp;
+  t_file *tmp;
 
   i = 0;
   j = 0;
@@ -29,9 +29,9 @@ void sort_arr_name(t_file **arr)
     {
       if(ft_strcmp(ft_string_tolower(arr[i]->filename), ft_string_tolower(arr[j + 1]->filename)) > 0)
       {
-        tmp = arr[i]->filename;
-        arr[i]->filename = arr[j + 1]->filename;
-        arr[j + 1]->filename = tmp; 
+        tmp = arr[i];
+        arr[i] = arr[j + 1];
+        arr[j + 1] = tmp; 
       }
       j++;
     }
@@ -52,6 +52,30 @@ char *set_time(long int time)
     return(time_str);
 
 }
+char *set_file_perm(struct stat *buf)
+{
+  char *perm_str;
+
+  perm_str = (char*)malloc(10 * sizeof(char) + 1);
+  if(S_ISDIR(buf->st_mode))
+    perm_str[0] = 'd';
+  else if (S_ISLNK(buf->st_mode))
+    perm_str[0] = 'l';
+  else
+    perm_str[0] = '-';
+  perm_str[1] = (buf->st_mode & S_IRUSR) ? 'r' : '-';
+  perm_str[2] = (buf->st_mode & S_IWUSR) ? 'w' : '-';
+  perm_str[3] = (buf->st_mode & S_IXUSR) ? 'x' : '-';
+  perm_str[4] = (buf->st_mode & S_IRGRP) ? 'r' : '-';
+  perm_str[5] = (buf->st_mode & S_IWGRP) ? 'w' : '-';
+  perm_str[6] = (buf->st_mode & S_IXGRP) ? 'x' : '-';
+  perm_str[7] = (buf->st_mode & S_IROTH) ? 'r' : '-';
+  perm_str[8] = (buf->st_mode & S_IWOTH) ? 'w' : '-';
+  perm_str[9] = (buf->st_mode & S_IXOTH) ? 'x' : '-';
+  perm_str[10] = '\0';
+  return (perm_str);
+
+}
 
 void set_file_struct(t_file *file, struct dirent *fileinfo, struct stat *buf)
 {
@@ -59,15 +83,13 @@ void set_file_struct(t_file *file, struct dirent *fileinfo, struct stat *buf)
     struct group *groupid;
     userid = getpwuid(buf->st_uid);
     groupid = getgrgid(buf->st_gid);
+    file->permissions = set_file_perm(buf);
     file->links = buf->st_nlink;
     file->uid = userid->pw_name;
     file->guid = groupid->gr_name;
     file->size = buf->st_size;
     file->time = set_time(buf->st_mtime);
     file->filename = fileinfo->d_name;
-   // ft_printf("%o %d %s %s %ld %s %s\n", buf->st_mode & 0777, file->links, file->uid, file->guid, file->size, file->time, file->filename);
-    
-    //free(file->time);
 }
 
 int  count_files(char *path)
@@ -92,7 +114,7 @@ int  count_files(char *path)
     return(i);
 }
 
-void create_arr(char *path)
+void create_arr(char *path, t_flags *new)
 {
   t_file **filearr;
   struct dirent *test3;
@@ -117,10 +139,18 @@ void create_arr(char *path)
     {
       tmp = ft_strjoin(path, test3->d_name);
       lstat(tmp, &buf);
-     filearr[i] = (t_file*)malloc(sizeof(t_file));
-     set_file_struct(filearr[i], test3, &buf);
-     free(tmp);
-     i++;
+      if(ft_strcmp(test3->d_name, ".") == 0 && ft_strcmp(test3->d_name, "..") == 0 && new->a_flag == 0)
+      {
+        //i--;
+        ft_printf("hii");
+      }
+      else
+      { 
+        filearr[i] = (t_file*)malloc(sizeof(t_file));
+        set_file_struct(filearr[i], test3, &buf);
+      }
+      free(tmp);
+      i++;
     }
     closedir(dir);
     filearr[i]= NULL;
@@ -129,15 +159,15 @@ void create_arr(char *path)
     i = 0;
    while(filearr[i] != NULL)
    {
-      ft_printf("%o %d %s %s %ld %s %s\n", buf.st_mode & 0777, filearr[i]->links, filearr[i]->uid, filearr[i]->guid, filearr[i]->size, filearr[i]->time, filearr[i]->filename);
+      ft_printf("%s %d %s %s %ld %s %s\n", filearr[i]->permissions, filearr[i]->links, filearr[i]->uid, filearr[i]->guid, filearr[i]->size, filearr[i]->time, filearr[i]->filename);
       i++;
-     //free(filearr[i]->time);
    }
    ft_printf("\n");
    i = 0;
    while(filearr[i] != NULL)
    {
      free(filearr[i]->time);
+     free(filearr[i]->permissions);
    free(filearr[i]);
    i++;
    }
@@ -228,18 +258,18 @@ t_list  *sort_path_list(t_list *head)
 	return (begin);
 }
 
-void    testfunc(char *basepath)
+void    testfunc(char *basepath, t_flags *new)
 {
   t_list *head;
   t_list *sort;
 
   head = NULL; 
-  create_arr(basepath);
+  create_arr(basepath, new);
   get_path_list(&head, basepath);
   sort = sort_path_list(head);
   while(sort != NULL)
   {
-    testfunc(sort->path);
+    testfunc(sort->path, new);
     sort = sort->next;
   }
   destroy_list(head);
@@ -297,11 +327,11 @@ int main(int argc, char **argv)
            if(check_path(argv[i]) != 0)
            {
              tmp = ft_strjoin(argv[i], "/");
-             testfunc(tmp);
+             testfunc(tmp, &new);
              free(tmp);
            }
            else
-            testfunc(argv[i]);
+            testfunc(argv[i], &new);
         }
         i++;
         
