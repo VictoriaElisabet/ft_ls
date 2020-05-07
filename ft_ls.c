@@ -113,6 +113,42 @@ int  count_files(char *path)
     closedir(dir);
     return(i);
 }
+void  print_files(t_file **filearr, t_flags *new)
+{
+  int i;
+
+  i = 0;
+  while(filearr[i] != NULL)
+   {
+    if (new->a_flag != 1 && (ft_strcmp(filearr[i]->filename, ".") == 0 || ft_strcmp(filearr[i]->filename, "..") == 0))
+    {
+      i++;
+     // ft_printf("%s %d %s %s %ld %s %s\n", filearr[i]->permissions, filearr[i]->links, filearr[i]->uid, filearr[i]->guid, filearr[i]->size, filearr[i]->time, filearr[i]->filename);
+      //ft_printf("hiit");
+    }
+    else
+      if(new->l_flag == 1)
+        ft_printf("%s %d %s %s %ld %s %s\n", filearr[i]->permissions, filearr[i]->links, filearr[i]->uid, filearr[i]->guid, filearr[i]->size, filearr[i]->time, filearr[i]->filename);
+      else
+        ft_printf("%s\n", filearr[i]->filename);
+    i++;
+   }
+   ft_printf("\n");
+}
+void  destroy_filearr(t_file **filearr)
+{
+  int i;
+
+  i = 0;
+  while(filearr[i] != NULL)
+   {
+     free(filearr[i]->time);
+     free(filearr[i]->permissions);
+   free(filearr[i]);
+   i++;
+   }
+   free(filearr);
+}
 
 void create_arr(char *path, t_flags *new)
 {
@@ -122,10 +158,8 @@ void create_arr(char *path, t_flags *new)
   DIR *dir;
   int i;
   char *tmp;
-  int count;
 
   i = 0;
-  count = count_files(path);
   dir = opendir(path);
     if(!(dir))
     {
@@ -134,45 +168,22 @@ void create_arr(char *path, t_flags *new)
         exit(1);
     }
     ft_printf("%s:\n", path);
-    filearr = (t_file**)malloc(count * sizeof(t_file*) + 1);
+    filearr = (t_file**)malloc(count_files(path) * sizeof(t_file*) + 1);
     while((test3 = readdir(dir)) != NULL)
     {
       tmp = ft_strjoin(path, test3->d_name);
       lstat(tmp, &buf);
-      if(ft_strcmp(test3->d_name, ".") == 0 && ft_strcmp(test3->d_name, "..") == 0 && new->a_flag == 0)
-      {
-        //i--;
-        ft_printf("hii");
-      }
-      else
-      { 
-        filearr[i] = (t_file*)malloc(sizeof(t_file));
-        set_file_struct(filearr[i], test3, &buf);
-      }
+      filearr[i] = (t_file*)malloc(sizeof(t_file));
+      set_file_struct(filearr[i], test3, &buf);
       free(tmp);
       i++;
     }
     closedir(dir);
     filearr[i]= NULL;
+    // sort arr name måste också ha med ifall det ska sorteras enlig mod date och reverse
     sort_arr_name(filearr);
-    
-    i = 0;
-   while(filearr[i] != NULL)
-   {
-      ft_printf("%s %d %s %s %ld %s %s\n", filearr[i]->permissions, filearr[i]->links, filearr[i]->uid, filearr[i]->guid, filearr[i]->size, filearr[i]->time, filearr[i]->filename);
-      i++;
-   }
-   ft_printf("\n");
-   i = 0;
-   while(filearr[i] != NULL)
-   {
-     free(filearr[i]->time);
-     free(filearr[i]->permissions);
-   free(filearr[i]);
-   i++;
-   }
-   free(filearr);
-
+    print_files(filearr, new);
+    destroy_filearr(filearr);
 }
 
 int check_path(char *path)
@@ -265,7 +276,10 @@ void    testfunc(char *basepath, t_flags *new)
 
   head = NULL; 
   create_arr(basepath, new);
+  if(new->R_flag == 1)
+  {
   get_path_list(&head, basepath);
+  //måste också had ifall listan ska sort enlig mod date eller enligt rev date. kan använda stat på pathen för att få mod time 
   sort = sort_path_list(head);
   while(sort != NULL)
   {
@@ -273,6 +287,7 @@ void    testfunc(char *basepath, t_flags *new)
     sort = sort->next;
   }
   destroy_list(head);
+  }
 }
 
 void set_flag_struct(t_flags *new)
@@ -302,28 +317,30 @@ int main(int argc, char **argv)
       {
         if(ft_strncmp(argv[i], "-", 1) == 0)
         {
-          j = 0;
+          j = 1;
+          ft_printf("hii");
           while(argv[i][j] != '\0')
           {
             if(argv[i][j] == 'l')
               new.l_flag = 1;
-            if(argv[i][j] == 'R')
+            else if(argv[i][j] == 'R')
               new.R_flag = 1;
-            if(argv[i][j] == 'r')
+            else if(argv[i][j] == 'r')
               new.r_flag = 1;
-            if(argv[i][j] == 't')
+            else if(argv[i][j] == 't')
               new.t_flag = 1;
-            if(argv[i][j] == 'a')
+            else if(argv[i][j] == 'a')
               new.a_flag = 1;
             else
               break ;
             j++;
           }
+          ft_printf("l %d R %d r %d t %d a %d %s\n", new.l_flag, new.R_flag, new.r_flag, new.t_flag, new.a_flag, argv[i]);
          
         }
         else
         {
-           ft_printf("l %d R %d r %d t %d a %d %s\n", new.l_flag, new.R_flag, new.r_flag, new.t_flag, new.a_flag, argv[i]);
+           
            if(check_path(argv[i]) != 0)
            {
              tmp = ft_strjoin(argv[i], "/");
