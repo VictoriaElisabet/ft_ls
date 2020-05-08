@@ -39,6 +39,53 @@ void sort_arr_name(t_file **arr)
   }
 }
 
+void sort_mod_arr_name(t_file **arr)
+{
+  int i;
+  int j;
+  t_file *tmp;
+
+  i = 0;
+  j = 0;
+  while(arr[i] != NULL)
+  {
+    j = i;
+    while(arr[j + 1] != NULL)
+    {
+      if(arr[i]->mod_time < arr[j + 1]->mod_time)
+      {
+        tmp = arr[i];
+        arr[i] = arr[j + 1];
+        arr[j + 1] = tmp; 
+      }
+      j++;
+    }
+    i++;
+  }
+}
+
+void sort_rev_arr_name(t_file **arr)
+{
+  int i;
+  int j;
+  t_file *tmp;
+
+  i = 0;
+  j = 0;
+  while(arr[i] != NULL)
+  {
+    j = i;
+    while(arr[j + 1] != NULL)
+    {
+      tmp = arr[i];
+      arr[i] = arr[j + 1];
+      arr[j + 1] = tmp; 
+      j++;
+    }
+    i++;
+  }
+}
+
 char *set_time(long int time)
 {
   char *time_str;
@@ -90,6 +137,7 @@ void set_file_struct(t_file *file, struct dirent *fileinfo, struct stat *buf)
     file->size = buf->st_size;
     file->time = set_time(buf->st_mtime);
     file->filename = fileinfo->d_name;
+    file->mod_time = buf->st_mtime;
 }
 
 int  count_files(char *path)
@@ -120,17 +168,21 @@ void  print_files(t_file **filearr, t_flags *new)
   i = 0;
   while(filearr[i] != NULL)
    {
-    if (new->a_flag != 1 && (ft_strcmp(filearr[i]->filename, ".") == 0 || ft_strcmp(filearr[i]->filename, "..") == 0))
+    if (ft_strcmp(filearr[i]->filename, ".") != 0 && ft_strcmp(filearr[i]->filename, "..") != 0)
     {
-      i++;
-     // ft_printf("%s %d %s %s %ld %s %s\n", filearr[i]->permissions, filearr[i]->links, filearr[i]->uid, filearr[i]->guid, filearr[i]->size, filearr[i]->time, filearr[i]->filename);
-      //ft_printf("hiit");
-    }
-    else
       if(new->l_flag == 1)
         ft_printf("%s %d %s %s %ld %s %s\n", filearr[i]->permissions, filearr[i]->links, filearr[i]->uid, filearr[i]->guid, filearr[i]->size, filearr[i]->time, filearr[i]->filename);
       else
         ft_printf("%s\n", filearr[i]->filename);
+      //segfaultar ifall sista filen för då blir det nul
+    }
+    if (new->a_flag == 1 && (ft_strcmp(filearr[i]->filename, ".") == 0 || ft_strcmp(filearr[i]->filename, "..") == 0))
+    {
+      if(new->l_flag == 1)
+        ft_printf("%s %d %s %s %ld %s %s\n", filearr[i]->permissions, filearr[i]->links, filearr[i]->uid, filearr[i]->guid, filearr[i]->size, filearr[i]->time, filearr[i]->filename);
+      else
+        ft_printf("%s\n", filearr[i]->filename);
+    }
     i++;
    }
    ft_printf("\n");
@@ -180,8 +232,11 @@ void create_arr(char *path, t_flags *new)
     }
     closedir(dir);
     filearr[i]= NULL;
+    new->t_flag == 1 ? sort_mod_arr_name(filearr) : sort_arr_name(filearr);
+    if(new->r_flag == 1)
+      sort_rev_arr_name(filearr);
     // sort arr name måste också ha med ifall det ska sorteras enlig mod date och reverse
-    sort_arr_name(filearr);
+   // new->r_flag == 1 ? sort_rev_arr_name(filearr) : sort_arr_name(filearr);
     print_files(filearr, new);
     destroy_filearr(filearr);
 }

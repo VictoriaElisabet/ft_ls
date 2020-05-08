@@ -28,7 +28,7 @@ typedef struct	s_file
     int size;
     char *time;
     char *filename;
-	//void	*next;
+	long mod_time;
 }				t_file;
 
 typedef struct	s_flags
