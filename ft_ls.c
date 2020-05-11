@@ -174,7 +174,7 @@ void  print_files(t_file **filearr, t_flags *new)
         ft_printf("%s %d %s %s %ld %s %s\n", filearr[i]->permissions, filearr[i]->links, filearr[i]->uid, filearr[i]->guid, filearr[i]->size, filearr[i]->time, filearr[i]->filename);
       else
         ft_printf("%s\n", filearr[i]->filename);
-      //segfaultar ifall sista filen för då blir det nul
+
     }
     if (new->a_flag == 1 && (ft_strcmp(filearr[i]->filename, ".") == 0 || ft_strcmp(filearr[i]->filename, "..") == 0))
     {
@@ -324,6 +324,57 @@ t_list  *sort_path_list(t_list *head)
 	return (begin);
 }
 
+t_list  *sort_rev_path_list(t_list *head)
+{
+	t_list	*begin;
+	t_list	*current;
+  char *tmp;
+
+	begin = head;
+	while (head)
+	{
+		current = head->next;
+		while (current)
+		{
+				tmp = head->path;
+        head->path = current->path;
+        current->path = tmp; 
+			  current = current->next;
+	  }
+		head = head->next;
+	}
+	return (begin);
+}
+
+t_list  *sort_path_time_list(t_list *head)
+{
+	t_list	*begin;
+	t_list	*current;
+  char *tmp;
+  struct stat temp1;
+  struct stat temp2;
+
+	begin = head;
+	while (head)
+	{
+		current = head->next;
+		while (current)
+		{
+      stat(head->path, &temp1);
+      stat(current->path, &temp2);
+			if (temp1.st_mtime < temp2.st_mtime)
+			{
+				tmp = head->path;
+        head->path = current->path;
+        current->path = tmp; 
+			}
+			current = current->next;
+		}
+		head = head->next;
+	}
+	return (begin);
+}
+
 void    testfunc(char *basepath, t_flags *new)
 {
   t_list *head;
@@ -334,8 +385,14 @@ void    testfunc(char *basepath, t_flags *new)
   if(new->R_flag == 1)
   {
   get_path_list(&head, basepath);
+  //sort = sort_path_list(head);
   //måste också had ifall listan ska sort enlig mod date eller enligt rev date. kan använda stat på pathen för att få mod time 
-  sort = sort_path_list(head);
+  if(new->t_flag == 1)
+    sort = sort_path_time_list(head);
+  else
+    sort = sort_path_list(head);
+  if(new->r_flag == 1)
+    sort = sort_rev_path_list(head);
   while(sort != NULL)
   {
     testfunc(sort->path, new);
