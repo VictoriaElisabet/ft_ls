@@ -108,8 +108,10 @@ void create_arr(char *path, t_flags *new)
   DIR *dir;
   int i;
   char *tmp;
+  unsigned int total;
 
   i = 0;
+  total = 0;
   dir = opendir(path);
     if(!(dir))
     {
@@ -123,6 +125,9 @@ void create_arr(char *path, t_flags *new)
     {
       tmp = ft_strjoin(path, test3->d_name);
       lstat(tmp, &buf);
+      if((ft_strcmp(test3->d_name, ".") != 0 && ft_strcmp(test3->d_name, "..") != 0) || 
+        (new->a_flag == 1 && (ft_strcmp(test3->d_name, ".") == 0 || ft_strcmp(test3->d_name, "..") == 0)))
+        total = total + buf.st_blocks;
       filearr[i] = (t_file*)malloc(sizeof(t_file));
       set_file_struct(filearr[i], test3, &buf);
       free(tmp);
@@ -135,7 +140,7 @@ void create_arr(char *path, t_flags *new)
       sort_rev_arr_name(filearr);
     // sort arr name måste också ha med ifall det ska sorteras enlig mod date och reverse
    // new->r_flag == 1 ? sort_rev_arr_name(filearr) : sort_arr_name(filearr);
-    print_files(filearr, new);
+    print_files(filearr, total, new);
     destroy_filearr(filearr);
 }
 

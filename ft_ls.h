@@ -64,7 +64,7 @@ void            create_arr(char *path, t_flags *new);
 void            get_path_list(t_list **head, char *basepath);
 void            destroy_list(t_list *head);
 void            set_file_struct(t_file *file, struct dirent *fileinfo, struct stat *buf);
-void            print_files(t_file **filearr, t_flags *new);
+void            print_files(t_file **filearr, unsigned int total, t_flags *new);
 void            set_flag_struct(t_flags *new);
 
 t_list          *create_path_list(t_list **head, char *path);

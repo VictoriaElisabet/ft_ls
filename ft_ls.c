@@ -35,11 +35,12 @@ int  count_files(char *path)
     return(i);
 }
 
-void  print_files(t_file **filearr, t_flags *new)
+void  print_files(t_file **filearr, unsigned int total, t_flags *new)
 {
   int i;
 
   i = 0;
+  ft_printf("total %d\n", total);
   while(filearr[i] != NULL)
    {
     if (ft_strcmp(filearr[i]->filename, ".") != 0 && ft_strcmp(filearr[i]->filename, "..") != 0)
