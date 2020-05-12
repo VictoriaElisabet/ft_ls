@@ -40,7 +40,8 @@ void  print_files(t_file **filearr, unsigned int total, t_flags *new)
   int i;
 
   i = 0;
-  ft_printf("total %d\n", total);
+  if(new->l_flag == 1)
+    ft_printf("total %d\n", total);
   while(filearr[i] != NULL)
    {
     if (ft_strcmp(filearr[i]->filename, ".") != 0 && ft_strcmp(filearr[i]->filename, "..") != 0)
