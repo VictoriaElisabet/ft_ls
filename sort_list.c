@@ -13,13 +13,13 @@
 #include "./libft/libft.h"
 #include "ft_ls.h"
 
-t_list  *sort_path_time_list(t_list *head)
+t_list	*sort_path_time_list(t_list *head)
 {
-	t_list	*begin;
-	t_list	*current;
-  char *tmp;
-  struct stat temp1;
-  struct stat temp2;
+	t_list		*begin;
+	t_list		*current;
+	char		*tmp;
+	struct stat	temp1;
+	struct stat	temp2;
 
 	begin = head;
 	while (head)
@@ -27,21 +27,21 @@ t_list  *sort_path_time_list(t_list *head)
 		current = head->next;
 		while (current)
 		{
-      if(!(stat(head->path, &temp1)))
-	{
-		strerror(errno);
-		exit(EXIT_FAILURE);
-	}
-      if(!(stat(current->path, &temp2)))
-	  	{
-		strerror(errno);
-		exit(EXIT_FAILURE);
-	}
+			if (stat(head->path, &temp1) == -1)
+			{
+				strerror(errno);
+				exit(EXIT_FAILURE);
+			}
+			if (stat(current->path, &temp2) == -1)
+			{
+				strerror(errno);
+				exit(EXIT_FAILURE);
+			}
 			if (temp1.st_mtime < temp2.st_mtime)
 			{
 				tmp = head->path;
-        head->path = current->path;
-        current->path = tmp; 
+				head->path = current->path;
+				current->path = tmp;
 			}
 			current = current->next;
 		}
@@ -50,11 +50,11 @@ t_list  *sort_path_time_list(t_list *head)
 	return (begin);
 }
 
-t_list  *sort_rev_path_list(t_list *head)
+t_list	*sort_rev_path_list(t_list *head)
 {
 	t_list	*begin;
 	t_list	*current;
-  char *tmp;
+	char	*tmp;
 
 	begin = head;
 	while (head)
@@ -62,21 +62,21 @@ t_list  *sort_rev_path_list(t_list *head)
 		current = head->next;
 		while (current)
 		{
-				tmp = head->path;
-        head->path = current->path;
-        current->path = tmp; 
-			  current = current->next;
-	  }
+			tmp = head->path;
+			head->path = current->path;
+			current->path = tmp;
+			current = current->next;
+		}
 		head = head->next;
 	}
 	return (begin);
 }
 
-t_list  *sort_path_list(t_list *head)
+t_list	*sort_path_list(t_list *head)
 {
 	t_list	*begin;
 	t_list	*current;
-  char *tmp;
+	char	*tmp;
 
 	begin = head;
 	while (head)
@@ -87,8 +87,8 @@ t_list  *sort_path_list(t_list *head)
 			if (ft_strcmp(head->path, current->path) > 0)
 			{
 				tmp = head->path;
-        head->path = current->path;
-        current->path = tmp; 
+				head->path = current->path;
+				current->path = tmp;
 			}
 			current = current->next;
 		}
