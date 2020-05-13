@@ -52,6 +52,7 @@ void  get_path_list(t_list **head, char *basepath)
     }
     free(path);
   }
+  //if readdir e NULL å errno e int noll så exit me error men i vilket skede ska errno sättas till noll.
   if(closedir(dir) == -1)
   {
     strerror(errno);
