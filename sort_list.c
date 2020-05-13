@@ -27,8 +27,16 @@ t_list  *sort_path_time_list(t_list *head)
 		current = head->next;
 		while (current)
 		{
-      stat(head->path, &temp1);
-      stat(current->path, &temp2);
+      if(!(stat(head->path, &temp1)))
+	{
+		strerror(errno);
+		exit(EXIT_FAILURE);
+	}
+      if(!(stat(current->path, &temp2)))
+	  	{
+		strerror(errno);
+		exit(EXIT_FAILURE);
+	}
 			if (temp1.st_mtime < temp2.st_mtime)
 			{
 				tmp = head->path;

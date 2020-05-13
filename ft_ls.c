@@ -25,13 +25,17 @@ int  count_files(char *path)
     {
         ft_printf("ft_ls: cannot access '%s' : ", path);
         perror("");
-        exit(1);
+        exit(EXIT_FAILURE);
     }
     while((test2 = readdir(dir)) != NULL)
     {
       i++;
     }
-    closedir(dir);
+    if(closedir(dir) == -1)
+    {
+      strerror(errno);
+      exit(EXIT_FAILURE);
+    }
     return(i);
 }
 
@@ -84,7 +88,7 @@ void    testfunc(char *basepath, t_flags *new)
   create_arr(basepath, new);
   if(new->R_flag == 1)
   {
-  get_path_list(&head, basepath);
+    get_path_list(&head, basepath);
   //sort = sort_path_list(head);
   //måste också had ifall listan ska sort enlig mod date eller enligt rev date. kan använda stat på pathen för att få mod time 
   if(new->t_flag == 1)
@@ -121,7 +125,6 @@ int main(int argc, char **argv)
         if(ft_strncmp(argv[i], "-", 1) == 0)
         {
           j = 1;
-          ft_printf("hii");
           while(argv[i][j] != '\0')
           {
             if(argv[i][j] == 'l')
@@ -146,7 +149,11 @@ int main(int argc, char **argv)
            
            if(check_path(argv[i]) != 0)
            {
-             tmp = ft_strjoin(argv[i], "/");
+              if(!(tmp = ft_strjoin(argv[i], "/")))
+              {
+                strerror(errno);
+                exit(EXIT_FAILURE);
+              }
              testfunc(tmp, &new);
              free(tmp);
            }

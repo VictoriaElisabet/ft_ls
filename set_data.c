@@ -19,8 +19,8 @@ static char *set_time(long int time)
 
   if(!(time_str = ft_strsub(ctime(&time), 4, 12)))
   {
-    ft_putstr("Malloc failed or errno ENOMEM?");
-    exit(1);
+    strerror(errno);
+    exit(EXIT_FAILURE);
   }
   else
     return(time_str);
@@ -31,7 +31,11 @@ static char *set_file_perm(struct stat *buf)
 {
   char *perm_str;
 
-  perm_str = (char*)malloc(10 * sizeof(char) + 1);
+  if(!(perm_str = (char*)malloc(10 * sizeof(char) + 1)))
+  {
+    strerror(errno);
+    exit(EXIT_FAILURE);
+  }
   if(S_ISDIR(buf->st_mode))
     perm_str[0] = 'd';
   else if (S_ISLNK(buf->st_mode))
@@ -56,8 +60,16 @@ void set_file_struct(t_file *file, struct dirent *fileinfo, struct stat *buf)
 {
     struct passwd *userid;
     struct group *groupid;
-    userid = getpwuid(buf->st_uid);
-    groupid = getgrgid(buf->st_gid);
+    if(!(userid = getpwuid(buf->st_uid)))
+    {
+      strerror(errno);
+      exit(EXIT_FAILURE);
+    }
+    if(!(groupid = getgrgid(buf->st_gid)))
+     {
+      strerror(errno);
+      exit(EXIT_FAILURE);
+    }
     file->permissions = set_file_perm(buf);
     file->links = buf->st_nlink;
     file->uid = userid->pw_name;

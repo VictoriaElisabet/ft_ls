@@ -30,29 +30,49 @@ void  get_path_list(t_list **head, char *basepath)
   }
   while((list = readdir(dir)) != NULL)
   {
-    path = ft_strjoin(basepath, list->d_name); 
+    if(!(path = ft_strjoin(basepath, list->d_name)))
+    {
+    strerror(errno);
+    exit(EXIT_FAILURE);
+    }
     if(stat(path, &buf) == -1)
     {
         perror("");
-        exit(1);
+        exit(EXIT_FAILURE);
     }
     if(S_ISDIR(buf.st_mode) && (ft_strcmp(list->d_name, ".") != 0 && ft_strcmp(list->d_name, "..") != 0 && ft_strcmp(list->d_name, ".git") != 0))
     {
-      tmp = ft_strjoin(path, "/");
+      if(!(tmp = ft_strjoin(path, "/")))
+      {
+        strerror(errno);
+        exit(EXIT_FAILURE);
+     }
       push(head, tmp);
       free(tmp);
     }
     free(path);
   }
-  closedir(dir);
+  if(closedir(dir) == -1)
+  {
+    strerror(errno);
+    exit(EXIT_FAILURE);
+  }
 }
 
 void    push(t_list **head, char *path)
 {
     t_list *temp;
     
-	temp = (t_list*)malloc(sizeof(t_list));
-	temp->path = ft_strdup(path);
+	if(!(temp = (t_list*)malloc(sizeof(t_list))))
+  {
+    strerror(errno);
+    exit(EXIT_FAILURE);
+  }
+	if(!(temp->path = ft_strdup(path)))
+  {
+    strerror(errno);
+    exit(EXIT_FAILURE);
+  }
 	temp->next = *head;
     *head = temp;
 

@@ -120,20 +120,41 @@ void create_arr(char *path, t_flags *new)
         exit(1);
     }
     ft_printf("%s:\n", path);
-    filearr = (t_file**)malloc(count_files(path) * sizeof(t_file*) + 1);
+    if(!(filearr = (t_file**)malloc(count_files(path) * sizeof(t_file*) + 1)))
+    {
+      strerror(errno);
+      exit(EXIT_FAILURE);
+    }
     while((test3 = readdir(dir)) != NULL)
     {
-      tmp = ft_strjoin(path, test3->d_name);
-      lstat(tmp, &buf);
+      if(!(tmp = ft_strjoin(path, test3->d_name)))
+      {
+        strerror(errno);
+        exit(EXIT_FAILURE);
+      }
+      if(lstat(tmp, &buf) == -1)
+      {
+         strerror(errno);
+        exit(EXIT_FAILURE);
+      }
       if((ft_strcmp(test3->d_name, ".") != 0 && ft_strcmp(test3->d_name, "..") != 0) || 
         (new->a_flag == 1 && (ft_strcmp(test3->d_name, ".") == 0 || ft_strcmp(test3->d_name, "..") == 0)))
         total = total + buf.st_blocks;
-      filearr[i] = (t_file*)malloc(sizeof(t_file));
+      if(!(filearr[i] = (t_file*)malloc(sizeof(t_file))))
+      {
+        strerror(errno);
+        exit(EXIT_FAILURE);
+      }
       set_file_struct(filearr[i], test3, &buf);
       free(tmp);
       i++;
     }
-    closedir(dir);
+    if(closedir(dir) == -1)
+    {
+    
+         strerror(errno);
+        exit(EXIT_FAILURE);
+    }
     filearr[i]= NULL;
     new->t_flag == 1 ? sort_mod_arr_name(filearr) : sort_arr_name(filearr);
     if(new->r_flag == 1)
