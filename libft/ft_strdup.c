@@ -14,13 +14,15 @@
 
 static char		*ft_mystrcpy(char *dest, const char *src)
 {
-	while (*src != '\0')
+	int i;
+
+	i = 0;
+	while (src[i] != '\0')
 	{
-		*dest = *src;
-		dest++;
-		src++;
+		dest[i] = src[i];
+		i++;
 	}
-	*dest = '\0';
+	dest[i] = '\0';
 	return (dest);
 }
 
