@@ -28,15 +28,9 @@ t_list	*sort_path_time_list(t_list *head)
 		while (current)
 		{
 			if (stat(head->path, &temp1) == -1)
-			{
-				strerror(errno);
-				exit(EXIT_FAILURE);
-			}
+				print_error(errno);
 			if (stat(current->path, &temp2) == -1)
-			{
-				strerror(errno);
-				exit(EXIT_FAILURE);
-			}
+				print_error(errno);
 			if (temp1.st_mtime < temp2.st_mtime)
 			{
 				tmp = head->path;

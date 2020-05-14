@@ -11,8 +11,8 @@
 # **************************************************************************** #
 
 NAME = ft_ls
-SRC = ./ft_ls.c ./create_list.c ./filearr.c ./sort_list.c ./set_data.c
-OBJECTS = ./ft_ls.o ./create_list.o ./filearr.o ./sort_list.o ./set_data.o
+SRC = ./ft_ls.c ./create_list.c ./filearr.c ./sort_list.c ./set_data.c ./helpfunctions.c ./sort_filearr.c
+OBJECTS = ./ft_ls.o ./create_list.o ./filearr.o ./sort_list.o ./set_data.o ./helpfunctions.o ./sort_filearr.o
 INC = ./
 
 all: $(NAME)
