@@ -13,7 +13,7 @@
 #include "./libft/libft.h"
 #include "ft_ls.h"
 
-void	get_path_list(t_list **head, char *basepath)
+void	get_path_list(t_list **head, char *basepath, t_flags *new)
 {
 	DIR				*dir;
 	struct dirent	*list;
@@ -23,7 +23,7 @@ void	get_path_list(t_list **head, char *basepath)
 
 	if (!(dir = opendir(basepath)))
 	{
-		ft_printf("ft_ls: cannot access '%s' : %s", basepath);
+		ft_printf("ft_ls: cannot access '%s' : ", basepath);
 		print_error(errno);
 	}
 	while ((list = readdir(dir)) != NULL)
@@ -32,8 +32,9 @@ void	get_path_list(t_list **head, char *basepath)
 			print_error(errno);
 		if (stat(path, &buf) == -1)
 			print_error(errno);
-		if (S_ISDIR(buf.st_mode) && (ft_strcmp(list->d_name, ".") != 0 &&
-			ft_strcmp(list->d_name, "..") != 0 && ft_strcmp(list->d_name, ".git") != 0))
+		if ((S_ISDIR(buf.st_mode) && ft_strcmp(list->d_name, ".") != 0 &&
+			ft_strcmp(list->d_name, "..") != 0 && list->d_name[0] != '.') || (new->a_flag == 1 && S_ISDIR(buf.st_mode) && ft_strcmp(list->d_name, ".") != 0 &&
+			ft_strcmp(list->d_name, "..") != 0 && list->d_name[0] == '.'))
 		{
 			if (!(tmp = ft_strjoin(path, "/")))
 				print_error(errno);

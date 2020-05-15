@@ -41,6 +41,7 @@ typedef struct	s_file
 	char	*time;
 	char	*filename;
 	long	mod_time;
+	char	*linked_name;
 }				t_file;
 
 typedef struct	s_flags
@@ -54,15 +55,16 @@ typedef struct	s_flags
 
 int				count_files(char *path);
 int				check_a_flag(char *filename, t_flags *new);
+int				check_path(char *path);
 
 void			print_list(t_list *head);
 void			append(t_list *head, char *path);
 void			push(t_list **head, char *path);
 void			create_arr(char *path, t_flags *new);
-void			get_path_list(t_list **head, char *basepath);
+void			get_path_list(t_list **head, char *basepath, t_flags *new);
 void			destroy_list(t_list *head);
 void			set_file_struct(t_file *file, struct dirent *fileinfo,
-				struct stat *buf);
+				struct stat *buf, char *path);
 void			print_files(t_file **filearr, unsigned int total, t_flags *new);
 void			set_flag_struct(t_flags *new);
 void			print_error(int errnum);

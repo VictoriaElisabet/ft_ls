@@ -38,12 +38,31 @@ int		count_files(char *path)
 	}
 	return (i);
 }
+int		count_maxlen(t_file **filearr)
+{
+	int max_len;
+	int i;
+
+	max_len = 0;
+	i = 0;
+	while(filearr[i] != NULL)
+	{
+		if(filearr[i]->size > max_len)
+			max_len = filearr[i]->size;
+		i++;
+	}
+	return (max_len);
+}
 
 void	print_files(t_file **filearr, unsigned int total, t_flags *new)
 {
 	int i;
+	//int maxlen;
+	//char *tmp;
 
-	i = 0;
+	//maxlen = ft_count_digits(count_maxlen(filearr), 10);
+	//i = 0;
+	//get the bigges size and link? to set the padding
 	if (new->l_flag == 1)
 		ft_printf("total %d\n", total);
 	while (filearr[i] != NULL)
@@ -51,9 +70,20 @@ void	print_files(t_file **filearr, unsigned int total, t_flags *new)
 		if (check_a_flag(filearr[i]->filename, new) == 1)
 		{
 			if (new->l_flag == 1)
-				ft_printf("%s %d %s %s %ld %s %s\n", filearr[i]->permissions,
-				filearr[i]->links, filearr[i]->uid, filearr[i]->guid,
-				filearr[i]->size, filearr[i]->time, filearr[i]->filename);
+			{
+				//ft_printf("le %d\n", maxlen - ft_count_digits(filearr[i]->size, 10));
+				//tmp = ft_strnew(maxlen - ft_count_digits(filearr[i]->size, 10) + 1);
+				//tmp = ft_memset(tmp, ' ', ft_count_digits(filearr[i]->size, 10));
+				if(filearr[i]->linked_name != NULL)
+					ft_printf("%s %d %s %s %ld %s %s -> %s\n", filearr[i]->permissions,
+					filearr[i]->links, filearr[i]->uid, filearr[i]->guid,
+					filearr[i]->size, filearr[i]->time, filearr[i]->filename, filearr[i]->linked_name);
+				else
+					ft_printf("%s %d %s %s %ld %s %s\n", filearr[i]->permissions,
+					filearr[i]->links, filearr[i]->uid, filearr[i]->guid,
+					filearr[i]->size, filearr[i]->time, filearr[i]->filename);
+				//free(tmp);
+			}
 			else
 				ft_printf("%s\n", filearr[i]->filename);
 		}
@@ -71,7 +101,7 @@ void	testfunc(char *basepath, t_flags *new)
 	create_arr(basepath, new);
 	if (new->rec_flag == 1)
 	{
-		get_path_list(&head, basepath);
+		get_path_list(&head, basepath, new);
 		if (new->t_flag == 1)
 			sort = sort_path_time_list(head);
 		else

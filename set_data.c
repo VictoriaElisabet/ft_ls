@@ -18,12 +18,8 @@ static char	*set_time(long int time)
 	char *time_str;
 
 	if (!(time_str = ft_strsub(ctime(&time), 4, 12)))
-	{
-		strerror(errno);
-		exit(EXIT_FAILURE);
-	}
-	else
-		return (time_str);
+		print_error(errno);
+	return (time_str);
 }
 
 static char	*set_file_perm(struct stat *buf)
@@ -31,10 +27,7 @@ static char	*set_file_perm(struct stat *buf)
 	char *perm_str;
 
 	if (!(perm_str = (char*)malloc(10 * sizeof(char) + 1)))
-	{
-		strerror(errno);
-		exit(EXIT_FAILURE);
-	}
+		print_error(errno);
 	if (S_ISDIR(buf->st_mode))
 		perm_str[0] = 'd';
 	else if (S_ISLNK(buf->st_mode))
@@ -54,22 +47,34 @@ static char	*set_file_perm(struct stat *buf)
 	return (perm_str);
 }
 
+char		*set_linked_name(char *path, struct stat *buf)
+{
+	char *tmp;
+	ssize_t len;
+
+	if(!(tmp = (char*)malloc(buf->st_size * sizeof(char) + 1)))
+		print_error(errno);
+    if((len = readlink(path, tmp, sizeof(tmp) -1)) < 0)
+    	print_error(errno);
+	else
+		tmp[len] = '\0';
+    return(tmp);
+}
+
 void		set_file_struct(t_file *file, struct dirent *fileinfo,
-				struct stat *buf)
+				struct stat *buf, char *path)
 {
 	struct passwd	*userid;
 	struct group	*groupid;
 
 	if (!(userid = getpwuid(buf->st_uid)))
-	{
-		strerror(errno);
-		exit(EXIT_FAILURE);
-	}
+		print_error(errno);
 	if (!(groupid = getgrgid(buf->st_gid)))
-	{
-		strerror(errno);
-		exit(EXIT_FAILURE);
-	}
+		print_error(errno);
+	if(S_ISLNK(buf->st_mode))
+		file->linked_name = set_linked_name(path, buf);
+	else
+		file->linked_name = NULL;
 	file->permissions = set_file_perm(buf);
 	file->links = buf->st_nlink;
 	file->uid = userid->pw_name;
@@ -107,7 +112,10 @@ void		fill_flag_struct(char *argv, t_flags *new)
 		else if (argv[i] == 'a')
 			new->a_flag = 1;
 		else
-			break ;
+		{
+			ft_printf("./ft_ls: invalid option -- '%c'\nTry 'ls --help' for more information\n", argv[i]);
+			exit(EXIT_FAILURE);
+		}
 		i++;
 	}
 }

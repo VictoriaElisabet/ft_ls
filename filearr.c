@@ -20,6 +20,8 @@ static void	destroy_filearr(t_file **filearr)
 	i = 0;
 	while (filearr[i] != NULL)
 	{
+		if(filearr[i]->linked_name != NULL)
+			free(filearr[i]->linked_name);
 		free(filearr[i]->time);
 		free(filearr[i]->permissions);
 		free(filearr[i]);
@@ -49,7 +51,7 @@ int			create_arr_data(t_file **filearr, char *path, t_flags *new,
 			total = total + buf.st_blocks;
 		if (!(filearr[i] = (t_file*)malloc(sizeof(t_file))))
 			print_error(errno);
-		set_file_struct(filearr[i], test3, &buf);
+		set_file_struct(filearr[i], test3, &buf, tmp);
 		free(tmp);
 		i++;
 	}
@@ -68,10 +70,11 @@ void		create_arr(char *path, t_flags *new)
 	total = 0;
 	if (!(dir = opendir(path)))
 	{
-		ft_printf("ft_ls: cannot access '%s': %s", path);
+		ft_printf("ft_ls: cannot access '%s': ", path);
 		print_error(errno);
 	}
-	ft_printf("%s:\n", path);
+	if(new->rec_flag == 1)
+		ft_printf("%s:\n", path);
 	if (!(filearr = (t_file**)malloc(count_files(path) * sizeof(t_file*) + 1)))
 		print_error(errno);
 	total = create_arr_data(filearr, path, new, dir);
