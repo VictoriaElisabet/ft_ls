@@ -56,6 +56,7 @@ typedef struct	s_flags
 int				count_files(char *path);
 int				check_a_flag(char *filename, t_flags *new);
 int				check_path(char *path);
+int				count_not_alpha(char *str);
 
 void			print_list(t_list *head);
 void			append(t_list *head, char *path);
@@ -78,5 +79,7 @@ t_list			*ft_create_elem(char *path);
 t_list			*sort_path_time_list(t_list *head);
 t_list			*sort_rev_path_list(t_list *head);
 t_list			*sort_path_list(t_list *head);
+
+char			*remove_not_alpha(char *str);
 
 #endif

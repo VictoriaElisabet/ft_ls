@@ -18,6 +18,8 @@ void	sort_arr_name(t_file **arr)
 	int		i;
 	int		j;
 	t_file	*tmp;
+	char *str1;
+	char *str2;
 
 	i = 0;
 	j = 0;
@@ -26,13 +28,22 @@ void	sort_arr_name(t_file **arr)
 		j = i;
 		while (arr[j + 1] != NULL)
 		{
-			if (ft_strcmp(ft_string_tolower(arr[i]->filename),
-					ft_string_tolower(arr[j + 1]->filename)) > 0)
+			/*if(!(str1 = ft_string_tolower(ft_strdup(arr[i]->filename))))
+				print_error(errno);
+			if(!(str2 = ft_string_tolower(ft_strdup(arr[j + 1]->filename))))
+				print_error(errno);*/
+			if(!(str1 = ft_string_tolower(remove_not_alpha(arr[i]->filename)))
+				print_error(errno);
+			if(!(str2 = ft_string_tolower(remove_not_alpha(arr[j + 1]->filename)))
+				print_error(errno);
+			if(ft_strcmp(str1, str2) > 0)
 			{
 				tmp = arr[i];
 				arr[i] = arr[j + 1];
 				arr[j + 1] = tmp;
 			}
+			free(str1);
+			free(str2);
 			j++;
 		}
 		i++;

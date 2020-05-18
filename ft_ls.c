@@ -63,6 +63,7 @@ void	print_files(t_file **filearr, unsigned int total, t_flags *new)
 	//maxlen = ft_count_digits(count_maxlen(filearr), 10);
 	//i = 0;
 	//get the bigges size and link? to set the padding
+	i = 0;
 	if (new->l_flag == 1)
 		ft_printf("total %d\n", total);
 	while (filearr[i] != NULL)

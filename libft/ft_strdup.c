@@ -30,7 +30,7 @@ char			*ft_strdup(const char *src)
 {
 	char *arr;
 
-	arr = (char*)malloc(sizeof(char) * (ft_strlen(src) + 1));
+	arr = (char*)malloc(sizeof(char) * ft_strlen(src) + 1);
 	if (arr)
 	{
 		ft_mystrcpy(arr, src);

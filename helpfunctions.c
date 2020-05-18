@@ -39,3 +39,40 @@ int		check_path(char *path)
 	else
 		return (-1);
 }
+
+int		count_not_alpha(char *str)
+{
+	int i;
+	int count;
+
+	i = 0;
+	count = 0;
+	while(str[i] != '\0')
+	{
+		if(ft_isalpha(str[i]) == 0)
+			count++;
+		i++;
+	}
+	return (count);
+}
+
+char	*remove_not_alpha(char *str)
+{
+	char	*tmp;
+	int		len;
+	int		i;
+	int		j;
+
+	i = 0;
+	j = 0;
+	len = ft_strlen(str) - count_not_alpha(str);
+	tmp = (char*)malloc(len * sizeof(char) + 1);
+	while(str[i] != '\0')
+	{
+		if (ft_isalpha(str[i]) == 1)
+			tmp[j++] = str[i];
+		i++;
+	}
+	tmp[j] = '\0';
+	return (tmp);
+}
