@@ -49,16 +49,16 @@ static char	*set_file_perm(struct stat *buf)
 
 char		*set_linked_name(char *path, struct stat *buf)
 {
-	char *tmp;
-	ssize_t len;
+	char	*tmp;
+	ssize_t	len;
 
-	if(!(tmp = (char*)malloc(buf->st_size * sizeof(char) + 1)))
+	if (!(tmp = (char*)malloc(buf->st_size * sizeof(char) + 1)))
 		print_error(errno);
-    if((len = readlink(path, tmp, buf->st_size)) < 0)
-    	print_error(errno);
+	if ((len = readlink(path, tmp, buf->st_size)) < 0)
+		print_error(errno);
 	else
 		tmp[len] = '\0';
-    return(tmp);
+	return (tmp);
 }
 
 void		set_file_struct(t_file *file, struct dirent *fileinfo,
@@ -71,7 +71,7 @@ void		set_file_struct(t_file *file, struct dirent *fileinfo,
 		print_error(errno);
 	if (!(groupid = getgrgid(buf->st_gid)))
 		print_error(errno);
-	if(S_ISLNK(buf->st_mode))
+	if (S_ISLNK(buf->st_mode))
 		file->linked_name = set_linked_name(path, buf);
 	else
 		file->linked_name = NULL;
@@ -113,7 +113,8 @@ void		fill_flag_struct(char *argv, t_flags *new)
 			new->a_flag = 1;
 		else
 		{
-			ft_printf("./ft_ls: invalid option -- '%c'\nTry 'ls --help' for more information\n", argv[i]);
+			ft_printf("./ft_ls: invalid option -- '%c'\n", argv[i]);
+			ft_printf("Try 'ls --help' for more information\n");
 			exit(EXIT_FAILURE);
 		}
 		i++;

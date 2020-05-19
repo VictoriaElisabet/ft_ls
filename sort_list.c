@@ -13,13 +13,10 @@
 #include "./libft/libft.h"
 #include "ft_ls.h"
 
-//lägg till swap funct
-
-t_list	*sort_path_time_list(t_list *head)
+t_list	*sort_path_time_list(t_list *head, char *tmp)
 {
 	t_list		*begin;
 	t_list		*current;
-	char		*tmp;
 	struct stat	temp1;
 	struct stat	temp2;
 
@@ -29,9 +26,8 @@ t_list	*sort_path_time_list(t_list *head)
 		current = head->next;
 		while (current)
 		{
-			if (stat(head->path, &temp1) == -1)
-				print_error(errno);
-			if (stat(current->path, &temp2) == -1)
+			if (stat(head->path, &temp1) == -1 ||
+					stat(current->path, &temp2) == -1)
 				print_error(errno);
 			if (temp1.st_mtime < temp2.st_mtime)
 			{

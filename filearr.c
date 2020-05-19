@@ -20,7 +20,7 @@ static void	destroy_filearr(t_file **filearr)
 	i = 0;
 	while (filearr[i] != NULL)
 	{
-		if(filearr[i]->linked_name != NULL)
+		if (filearr[i]->linked_name != NULL)
 			free(filearr[i]->linked_name);
 		free(filearr[i]->time);
 		free(filearr[i]->permissions);
@@ -43,9 +43,7 @@ int			create_arr_data(t_file **filearr, char *path, t_flags *new,
 	total = 0;
 	while ((test3 = readdir(dir)) != NULL)
 	{
-		if (!(tmp = ft_strjoin(path, test3->d_name)))
-			print_error(errno);
-		if (lstat(tmp, &buf) == -1)
+		if (!(tmp = ft_strjoin(path, test3->d_name)) || lstat(tmp, &buf) == -1)
 			print_error(errno);
 		if (check_a_flag(test3->d_name, new) == 1)
 			total = total + buf.st_blocks;
@@ -55,9 +53,9 @@ int			create_arr_data(t_file **filearr, char *path, t_flags *new,
 		free(tmp);
 		i++;
 	}
+	filearr[i] = NULL;
 	if (closedir(dir) == -1)
 		print_error(errno);
-	filearr[i] = NULL;
 	return (total);
 }
 
@@ -73,7 +71,7 @@ void		create_arr(char *path, t_flags *new)
 		ft_printf("ft_ls: cannot access '%s': ", path);
 		print_error(errno);
 	}
-	if(new->rec_flag == 1)
+	if (new->rec_flag == 1)
 		ft_printf("%s:\n", path);
 	if (!(filearr = (t_file**)malloc(count_files(path) * sizeof(t_file*) + 1)))
 		print_error(errno);

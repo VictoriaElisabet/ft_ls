@@ -19,6 +19,17 @@ void	print_error(int errnum)
 	exit(EXIT_FAILURE);
 }
 
+int		check_dir(char *filename, t_flags *new)
+{
+	if ((ft_strcmp(filename, ".") != 0 &&
+		ft_strcmp(filename, "..") != 0 && filename[0] != '.') ||
+		(new->a_flag == 1 && ft_strcmp(filename, ".") != 0 &&
+		ft_strcmp(filename, "..") != 0 && filename[0] == '.'))
+		return (1);
+	else
+		return (0);
+}
+
 int		check_a_flag(char *filename, t_flags *new)
 {
 	if ((ft_strcmp(filename, ".") != 0 && ft_strcmp(filename, "..") != 0) ||
@@ -47,9 +58,9 @@ int		count_not_alpha(char *str)
 
 	i = 0;
 	count = 0;
-	while(str[i] != '\0')
+	while (str[i] != '\0')
 	{
-		if(ft_isalpha(str[i]) == 0)
+		if (ft_isalpha(str[i]) == 0)
 			count++;
 		i++;
 	}
@@ -67,7 +78,7 @@ char	*remove_not_alpha(char *str)
 	j = 0;
 	len = ft_strlen(str) - count_not_alpha(str);
 	tmp = (char*)malloc(len * sizeof(char) + 1);
-	while(str[i] != '\0')
+	while (str[i] != '\0')
 	{
 		if (ft_isalpha(str[i]) == 1)
 			tmp[j++] = str[i];

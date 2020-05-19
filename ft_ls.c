@@ -38,6 +38,7 @@ int		count_files(char *path)
 	}
 	return (i);
 }
+
 int		count_maxlen(t_file **filearr)
 {
 	int max_len;
@@ -45,9 +46,9 @@ int		count_maxlen(t_file **filearr)
 
 	max_len = 0;
 	i = 0;
-	while(filearr[i] != NULL)
+	while (filearr[i] != NULL)
 	{
-		if(filearr[i]->size > max_len)
+		if (filearr[i]->size > max_len)
 			max_len = filearr[i]->size;
 		i++;
 	}
@@ -97,14 +98,18 @@ void	testfunc(char *basepath, t_flags *new)
 {
 	t_list *head;
 	t_list *sort;
+	char	*tmp;
+	char	*tmp1;
 
 	head = NULL;
+	tmp = NULL;
+	tmp1 = NULL;
 	create_arr(basepath, new);
 	if (new->rec_flag == 1)
 	{
-		get_path_list(&head, basepath, new);
+		get_path_list(&head, basepath, new, tmp1);
 		if (new->t_flag == 1)
-			sort = sort_path_time_list(head);
+			sort = sort_path_time_list(head, tmp);
 		else
 			sort = sort_path_list(head);
 		if (new->r_flag == 1)
