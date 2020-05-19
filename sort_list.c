@@ -12,7 +12,9 @@
 
 #include "./libft/libft.h"
 #include "ft_ls.h"
+
 //lägg till swap funct
+
 t_list	*sort_path_time_list(t_list *head)
 {
 	t_list		*begin;

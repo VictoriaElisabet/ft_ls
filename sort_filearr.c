@@ -32,9 +32,9 @@ void	sort_arr_name(t_file **arr)
 				print_error(errno);
 			if(!(str2 = ft_string_tolower(ft_strdup(arr[j + 1]->filename))))
 				print_error(errno);*/
-			if(!(str1 = ft_string_tolower(remove_not_alpha(arr[i]->filename)))
+			if(!(str1 = ft_string_tolower(remove_not_alpha(arr[i]->filename))))
 				print_error(errno);
-			if(!(str2 = ft_string_tolower(remove_not_alpha(arr[j + 1]->filename)))
+			if(!(str2 = ft_string_tolower(remove_not_alpha(arr[j + 1]->filename))))
 				print_error(errno);
 			if(ft_strcmp(str1, str2) > 0)
 			{
