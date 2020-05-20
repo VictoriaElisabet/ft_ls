@@ -73,5 +73,8 @@ int		check_asterisk(va_list ap)
 	long long n;
 
 	n = va_arg(ap, int);
-	return (n);
+	if (n < 0)
+		return (0);
+	else
+		return (n);
 }
