@@ -13,7 +13,7 @@
 #ifndef FT_PRINTF_H
 # define FT_PRINTF_H
 
-#include "../libft.h"
+# include "../libft.h"
 # include <stdarg.h>
 
 typedef struct	s_format
@@ -33,7 +33,8 @@ typedef struct	s_format
 
 void			ft_set_to_zero (t_format_struct *new);
 void			ft_set_flag(char c, t_format_struct *new);
-void			fill_struct(const char *format, t_format_struct *new, int i);
+void			fill_struct(const char *format, t_format_struct *new, int i,
+				va_list ap);
 void			octal_hash_exception(char *str, t_format_struct *new);
 
 int				ft_is_flag(char c);
@@ -59,6 +60,8 @@ int				ft_va_arg_hex(t_format_struct *new, va_list ap,
 				unsigned long long n);
 int				ft_check_conv_char(t_format_struct *new, va_list ap);
 int				set_len(long long first, long long second, long double nb);
+int				check_asterisk(va_list ap);
+int				create_struct(const char *format, va_list ap);
 
 char			*ft_add_ox(char *str, t_format_struct *new);
 char			*ft_add_zero_diouxx(char *str, int len, int preclen);

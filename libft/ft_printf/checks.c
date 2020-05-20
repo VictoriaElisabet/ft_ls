@@ -61,7 +61,7 @@ int		ft_check_conv_char(t_format_struct *new, va_list ap)
 	unsigned long long n;
 
 	n = 0;
-	if (new->conv_char == 'd' || new->conv_char == 'i')
+	if (new->conv_char == 'd' || new->conv_char == 'i' || new->conv_char == '*')
 		return (ft_va_arg_int(new, ap));
 	else if (new->conv_char == 'o')
 		return (ft_va_arg_octal(new, ap));

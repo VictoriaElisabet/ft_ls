@@ -67,3 +67,11 @@ char	*ft_set_sign(char *str, char sign)
 	free(tmp);
 	return (str);
 }
+
+int		check_asterisk(va_list ap)
+{
+	long long n;
+
+	n = va_arg(ap, int);
+	return (n);
+}
