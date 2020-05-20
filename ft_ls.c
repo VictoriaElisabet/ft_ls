@@ -77,13 +77,13 @@ void	print_files(t_file **filearr, unsigned int total, t_flags *new)
 				//tmp = ft_strnew(maxlen - ft_count_digits(filearr[i]->size, 10) + 1);
 				//tmp = ft_memset(tmp, ' ', ft_count_digits(filearr[i]->size, 10));
 				if(filearr[i]->linked_name != NULL)
-					ft_printf("%s %d %s %s %ld %s %s -> %s\n", filearr[i]->permissions,
-					filearr[i]->links, filearr[i]->uid, filearr[i]->guid,
+					ft_printf("%s %d %s %s %*ld %s %s -> %s\n", filearr[i]->permissions,
+					filearr[i]->links, filearr[i]->uid, filearr[i]->guid, 9,
 					filearr[i]->size, filearr[i]->time, filearr[i]->filename, filearr[i]->linked_name);
 				else
-					ft_printf("%s %d %s %s %ld %s %s\n", filearr[i]->permissions,
+					ft_printf("%s %d %s %s %*ld %s %s\n", filearr[i]->permissions,
 					filearr[i]->links, filearr[i]->uid, filearr[i]->guid,
-					filearr[i]->size, filearr[i]->time, filearr[i]->filename);
+					9, filearr[i]->size, filearr[i]->time, filearr[i]->filename);
 				//free(tmp);
 			}
 			else
