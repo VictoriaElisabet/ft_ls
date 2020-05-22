@@ -40,17 +40,6 @@ int		check_a_flag(char *filename, t_flags *new)
 		return (0);
 }
 
-int		check_path(char *path)
-{
-	int len;
-
-	len = ft_strlen(path);
-	if (path[len - 1] == '/')
-		return (0);
-	else
-		return (-1);
-}
-
 int		count_not_alpha(char *str)
 {
 	int i;

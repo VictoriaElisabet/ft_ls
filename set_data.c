@@ -13,7 +13,7 @@
 #include "./libft/libft.h"
 #include "ft_ls.h"
 
-static char	*set_time(long int time)
+char	*set_time(long int time)
 {
 	char *time_str;
 
@@ -22,7 +22,7 @@ static char	*set_time(long int time)
 	return (time_str);
 }
 
-static char	*set_file_perm(struct stat *buf)
+char	*set_file_perm(struct stat *buf)
 {
 	char *perm_str;
 
@@ -47,7 +47,7 @@ static char	*set_file_perm(struct stat *buf)
 	return (perm_str);
 }
 
-char		*set_linked_name(char *path, struct stat *buf)
+char	*set_linked_name(char *path, struct stat *buf)
 {
 	char	*tmp;
 	ssize_t	len;
@@ -61,31 +61,7 @@ char		*set_linked_name(char *path, struct stat *buf)
 	return (tmp);
 }
 
-void		set_file_struct(t_file *file, struct dirent *fileinfo,
-				struct stat *buf, char *path)
-{
-	struct passwd	*userid;
-	struct group	*groupid;
-
-	if (!(userid = getpwuid(buf->st_uid)))
-		print_error(errno);
-	if (!(groupid = getgrgid(buf->st_gid)))
-		print_error(errno);
-	if (S_ISLNK(buf->st_mode))
-		file->linked_name = set_linked_name(path, buf);
-	else
-		file->linked_name = NULL;
-	file->permissions = set_file_perm(buf);
-	file->links = buf->st_nlink;
-	file->uid = userid->pw_name;
-	file->guid = groupid->gr_name;
-	file->size = buf->st_size;
-	file->time = set_time(buf->st_mtime);
-	file->filename = fileinfo->d_name;
-	file->mod_time = buf->st_mtime;
-}
-
-void		set_flag_struct(t_flags *new)
+void	set_flag_struct(t_flags *new)
 {
 	new->l_flag = 0;
 	new->rec_flag = 0;
@@ -94,7 +70,7 @@ void		set_flag_struct(t_flags *new)
 	new->t_flag = 0;
 }
 
-void		fill_flag_struct(char *argv, t_flags *new)
+void	fill_flag_struct(char *argv, t_flags *new)
 {
 	int i;
 

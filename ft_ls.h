@@ -53,14 +53,11 @@ typedef struct	s_flags
 	int a_flag;
 }				t_flags;
 
-int				count_files(char *path);
 int				check_a_flag(char *filename, t_flags *new);
 int				check_path(char *path);
 int				count_not_alpha(char *str);
 int				check_dir(char *filename, t_flags *new);
 
-void			print_list(t_list *head);
-void			append(t_list *head, char *path);
 void			push(t_list **head, char *path);
 void			create_arr(char *path, t_flags *new);
 void			get_path_list(t_list **head, char *basepath, t_flags *new,
@@ -75,6 +72,9 @@ void			sort_arr_name(t_file **arr);
 void			sort_mod_arr_name(t_file **arr);
 void			sort_rev_arr_name(t_file **arr);
 void			fill_flag_struct(char *argv, t_flags *new);
+void			print_files(t_file **filearr, unsigned int total, t_flags *new);
+void			set_maxlen(t_file **filearr, int max_size[4], t_flags *new);
+void			print_list(t_file **filearr, int i, int size[4]);
 
 t_list			*create_path_list(t_list **head, char *path);
 t_list			*ft_create_elem(char *path);
@@ -83,5 +83,8 @@ t_list			*sort_rev_path_list(t_list *head);
 t_list			*sort_path_list(t_list *head);
 
 char			*remove_not_alpha(char *str);
+char			*set_time(long int time);
+char			*set_file_perm(struct stat *buf);
+char			*set_linked_name(char *path, struct stat *buf);
 
 #endif

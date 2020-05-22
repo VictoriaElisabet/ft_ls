@@ -13,6 +13,56 @@
 #include "./libft/libft.h"
 #include "ft_ls.h"
 
+void		set_file_struct(t_file *file, struct dirent *fileinfo,
+				struct stat *buf, char *path)
+{
+	struct passwd	*userid;
+	struct group	*groupid;
+
+	if (!(userid = getpwuid(buf->st_uid)))
+		print_error(errno);
+	if (!(groupid = getgrgid(buf->st_gid)))
+		print_error(errno);
+	if (S_ISLNK(buf->st_mode))
+		file->linked_name = set_linked_name(path, buf);
+	else
+		file->linked_name = NULL;
+	file->permissions = set_file_perm(buf);
+	file->links = buf->st_nlink;
+	file->uid = userid->pw_name;
+	file->guid = groupid->gr_name;
+	file->size = buf->st_size;
+	file->time = set_time(buf->st_mtime);
+	file->filename = fileinfo->d_name;
+	file->mod_time = buf->st_mtime;
+}
+
+static int	count_files(char *path)
+{
+	struct dirent	*test2;
+	DIR				*dir;
+	int				i;
+
+	i = 0;
+	dir = opendir(path);
+	if (!(dir))
+	{
+		ft_printf("ft_ls: cannot access '%s' : ", path);
+		perror("");
+		exit(EXIT_FAILURE);
+	}
+	while ((test2 = readdir(dir)) != NULL)
+	{
+		i++;
+	}
+	if (closedir(dir) == -1)
+	{
+		strerror(errno);
+		exit(EXIT_FAILURE);
+	}
+	return (i);
+}
+
 static void	destroy_filearr(t_file **filearr)
 {
 	int i;
@@ -72,7 +122,7 @@ void		create_arr(char *path, t_flags *new)
 		print_error(errno);
 	}
 	if (new->rec_flag == 1)
-		ft_printf("%s:\n", path);
+		ft_printf("\n%s:\n", path);
 	if (!(filearr = (t_file**)malloc(count_files(path) * sizeof(t_file*) + 1)))
 		print_error(errno);
 	total = create_arr_data(filearr, path, new, dir);
