@@ -25,11 +25,11 @@
 # include <time.h>
 # include <stdio.h>
 
-# define a_flag (1 << 0)
-# define l_flag (1 << 1)
-# define r_flag (1 << 2)
-# define R_flag (1 << 3)
-# define t_flag (1 << 4)
+# define A_FLAG		1
+# define L_FLAG 	2
+# define R_FLAG 	4
+# define RE_FLAG	8
+# define T_FLAG		16
 
 typedef struct	s_list
 {
@@ -54,7 +54,8 @@ int				check_path(char *path);
 int				count_not_alpha(char *str);
 int				check_a_flag(char *filename, int *flags);
 int				check_dir(char *filename, int *flags);
-int				create_arr_data(t_file **filearr, char *path, int *flags, DIR *dir);
+int				create_arr_data(t_file **filearr, char *path,
+				int *flags, DIR *dir);
 
 void			push(t_list **head, char *path);
 void			destroy_list(t_list *head);
@@ -71,7 +72,8 @@ void			set_maxlen(t_file **filearr, int max_size[4], int *flags);
 void			check_argv(char **argv, int *flags);
 void			recursive_list(char *basepath, int *flags);
 void			create_arr(char *path, int *flags);
-void			get_path_list(t_list **head, char *basepath, int *flags, char *tmp);
+void			get_path_list(t_list **head, char *basepath,
+				int *flags, char *tmp);
 
 t_list			*create_path_list(t_list **head, char *path);
 t_list			*ft_create_elem(char *path);

@@ -121,13 +121,13 @@ void		create_arr(char *path, int *flags)
 		ft_printf("ft_ls: cannot access '%s': ", path);
 		print_error(errno);
 	}
-	if(*flags & R_flag)
-		ft_printf("\n%s:\n", path);
+	if (*flags & RE_FLAG)
+		ft_printf("%s:\n", path);
 	if (!(filearr = (t_file**)malloc(count_files(path) * sizeof(t_file*) + 1)))
 		print_error(errno);
 	total = create_arr_data(filearr, path, flags, dir);
-	(*flags & t_flag) ? sort_mod_arr_name(filearr) : sort_arr_name(filearr);
-	if (*flags & r_flag)
+	(*flags & T_FLAG) ? sort_mod_arr_name(filearr) : sort_arr_name(filearr);
+	if (*flags & R_FLAG)
 		sort_rev_arr_name(filearr);
 	print_files(filearr, total, flags);
 	destroy_filearr(filearr);

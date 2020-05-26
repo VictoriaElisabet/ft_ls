@@ -24,17 +24,16 @@ void	recursive_list(char *basepath, int *flags)
 	tmp = NULL;
 	tmp1 = NULL;
 	create_arr(basepath, flags);
-	if (*flags & R_flag)
+	if (*flags & RE_FLAG)
 	{
 		get_path_list(&head, basepath, flags, tmp1);
-		if (*flags & t_flag)
-			sort = sort_path_time_list(head, tmp);
-		else
-			sort = sort_path_list(head);
-		if (*flags & r_flag)
+		(*flags & T_FLAG) ? (sort = sort_path_time_list(head, tmp)) :
+			(sort = sort_path_list(head));
+		if (*flags & R_FLAG)
 			sort = sort_rev_path_list(head);
 		while (sort != NULL)
 		{
+			ft_printf("\n");
 			recursive_list(sort->path, flags);
 			sort = sort->next;
 		}

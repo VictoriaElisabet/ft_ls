@@ -62,18 +62,17 @@ void	print_files(t_file **filearr, unsigned int total, int *flags)
 
 	i = 0;
 	set_maxlen(filearr, size, flags);
-	if (*flags & l_flag)
+	if (*flags & L_FLAG)
 		ft_printf("total %d\n", total);
 	while (filearr[i] != NULL)
 	{
 		if (check_a_flag(filearr[i]->filename, flags) == 1)
 		{
-			if (*flags & l_flag)
+			if (*flags & L_FLAG)
 				print_list(filearr, i, size);
 			else
 				ft_printf("%s\n", filearr[i]->filename);
 		}
 		i++;
 	}
-	//ft_printf("\n");
 }

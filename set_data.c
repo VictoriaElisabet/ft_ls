@@ -61,42 +61,6 @@ char	*set_linked_name(char *path, struct stat *buf)
 	return (tmp);
 }
 
-/*void	set_flag_struct(t_flags *new)
-{
-	new->l_flag = 0;
-	new->rec_flag = 0;
-	new->a_flag = 0;
-	new->r_flag = 0;
-	new->t_flag = 0;
-}
-
-void	fill_flag_struct(char *argv, t_flags *new)
-{
-	int i;
-
-	i = 1;
-	while (argv[i] != '\0')
-	{
-		if (argv[i] == 'l')
-			new->l_flag = 1;
-		else if (argv[i] == 'R')
-			new->rec_flag = 1;
-		else if (argv[i] == 'r')
-			new->r_flag = 1;
-		else if (argv[i] == 't')
-			new->t_flag = 1;
-		else if (argv[i] == 'a')
-			new->a_flag = 1;
-		else
-		{
-			ft_printf("./ft_ls: invalid option -- '%c'\n", argv[i]);
-			ft_printf("Try 'ls --help' for more information\n");
-			exit(EXIT_FAILURE);
-		}
-		i++;
-	}
-}*/
-
 int		ft_strindex(char *str, int c)
 {
 	int i;
