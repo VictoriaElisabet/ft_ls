@@ -52,30 +52,59 @@ int		check_path(char *path)
 		return (-1);
 }
 
-void	check_argv(char **argv, int *flags)
+void	create_argv_list(t_list **begin, char **argv, int i)
 {
-	int		i;
+	DIR		*dir;
 	char	*tmp;
 
-	i = 1;
 	while (argv[i] != NULL)
 	{
-		if (ft_strncmp(argv[i], "-", 1) == 0)
-			set_flags(argv[i], flags);
+		if (!(dir = opendir(argv[i])))
+		{
+			ft_printf("ft_ls: cannot access '%s': ", argv[i]);
+			perror("");
+		}
 		else
 		{
 			if (check_path(argv[i]) != 0)
 			{
 				if (!(tmp = ft_strjoin(argv[i], "/")))
 					print_error(errno);
-				recursive_list(tmp, flags);
+				push(begin, tmp);
 				free(tmp);
 			}
 			else
-				recursive_list(argv[i], flags);
+				push(begin, argv[i]);
 		}
+		closedir(dir);
 		i++;
 	}
+}
+
+void	check_argv(char **argv, int *flags)
+{
+	int		i;
+	t_list	*begin;
+	t_list	*temp;
+
+	i = 1;
+	begin = NULL;
+	while (argv[i] != NULL)
+	{
+		if (ft_strncmp(argv[i], "-", 1) == 0)
+			set_flags(argv[i], flags);
+		else
+			break ;
+		i++;
+	}
+	create_argv_list(&begin, argv, i);
+	temp = begin;
+	while (temp != NULL)
+	{
+		recursive_list(temp->path, flags);
+		temp = temp->next;
+	}
+	destroy_list(begin);
 }
 
 int		main(int argc, char **argv)
