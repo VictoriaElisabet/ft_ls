@@ -13,7 +13,7 @@
 #include "./libft/libft.h"
 #include "ft_ls.h"
 
-void	recursive_list(char *basepath, t_flags *new)
+void	recursive_list(char *basepath, int *flags)
 {
 	t_list	*head;
 	t_list	*sort;
@@ -23,19 +23,19 @@ void	recursive_list(char *basepath, t_flags *new)
 	head = NULL;
 	tmp = NULL;
 	tmp1 = NULL;
-	create_arr(basepath, new);
-	if (new->rec_flag == 1)
+	create_arr(basepath, flags);
+	if (*flags & R_flag)
 	{
-		get_path_list(&head, basepath, new, tmp1);
-		if (new->t_flag == 1)
+		get_path_list(&head, basepath, flags, tmp1);
+		if (*flags & t_flag)
 			sort = sort_path_time_list(head, tmp);
 		else
 			sort = sort_path_list(head);
-		if (new->r_flag == 1)
+		if (*flags & r_flag)
 			sort = sort_rev_path_list(head);
 		while (sort != NULL)
 		{
-			recursive_list(sort->path, new);
+			recursive_list(sort->path, flags);
 			sort = sort->next;
 		}
 		destroy_list(head);
@@ -53,7 +53,7 @@ int		check_path(char *path)
 		return (-1);
 }
 
-void	check_argv(char **argv, t_flags *new)
+void	check_argv(char **argv, int *flags)
 {
 	int		i;
 	char	*tmp;
@@ -62,18 +62,18 @@ void	check_argv(char **argv, t_flags *new)
 	while (argv[i] != NULL)
 	{
 		if (ft_strncmp(argv[i], "-", 1) == 0)
-			fill_flag_struct(argv[i], new);
+			set_flags(argv[i], flags);
 		else
 		{
 			if (check_path(argv[i]) != 0)
 			{
 				if (!(tmp = ft_strjoin(argv[i], "/")))
 					print_error(errno);
-				recursive_list(tmp, new);
+				recursive_list(tmp, flags);
 				free(tmp);
 			}
 			else
-				recursive_list(argv[i], new);
+				recursive_list(argv[i], flags);
 		}
 		i++;
 	}
@@ -81,14 +81,14 @@ void	check_argv(char **argv, t_flags *new)
 
 int		main(int argc, char **argv)
 {
-	t_flags new;
+	int flags;
 
-	set_flag_struct(&new);
+	flags = 0;
 	if (argc > 1)
 	{
 		if (ft_strcmp(argv[0], "./ft_ls") == 0)
-			check_argv(argv, &new);
+			check_argv(argv, &flags);
 	}
 	else
-		recursive_list("./", &new);
+		recursive_list("./", &flags);
 }

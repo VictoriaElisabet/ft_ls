@@ -19,21 +19,21 @@ void	print_error(int errnum)
 	exit(EXIT_FAILURE);
 }
 
-int		check_dir(char *filename, t_flags *new)
+int		check_dir(char *filename, int *flags)
 {
 	if ((ft_strcmp(filename, ".") != 0 &&
 		ft_strcmp(filename, "..") != 0 && filename[0] != '.') ||
-		(new->a_flag == 1 && ft_strcmp(filename, ".") != 0 &&
+		((*flags & a_flag) && ft_strcmp(filename, ".") != 0 &&
 		ft_strcmp(filename, "..") != 0 && filename[0] == '.'))
 		return (1);
 	else
 		return (0);
 }
 
-int		check_a_flag(char *filename, t_flags *new)
+int		check_a_flag(char *filename, int *flags)
 {
 	if ((ft_strcmp(filename, ".") != 0 && ft_strcmp(filename, "..") != 0) ||
-		(new->a_flag == 1 && (ft_strcmp(filename, ".") == 0 ||
+		((*flags & a_flag) == 1 && (ft_strcmp(filename, ".") == 0 ||
 		ft_strcmp(filename, "..") == 0)))
 		return (1);
 	else

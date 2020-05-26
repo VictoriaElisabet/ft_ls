@@ -13,7 +13,7 @@
 #include "./libft/libft.h"
 #include "ft_ls.h"
 
-void	set_maxlen(t_file **filearr, int max_size[4], t_flags *new)
+void	set_maxlen(t_file **filearr, int max_size[4], int *flags)
 {
 	int i;
 
@@ -24,10 +24,10 @@ void	set_maxlen(t_file **filearr, int max_size[4], t_flags *new)
 	max_size[3] = 0;
 	while (filearr[i] != 0)
 	{
-		if (check_a_flag(filearr[i]->filename, new) == 1)
+		if (check_a_flag(filearr[i]->filename, flags) == 1)
 			if (ft_count_digits(filearr[i]->links, 10) > max_size[0])
 				max_size[0] = ft_count_digits(filearr[i]->links, 10);
-		if (check_a_flag(filearr[i]->filename, new) == 1)
+		if (check_a_flag(filearr[i]->filename, flags) == 1)
 			if (ft_count_digits(filearr[i]->size, 10) > max_size[1])
 				max_size[1] = ft_count_digits(filearr[i]->size, 10);
 		if (ft_strlen(filearr[i]->uid) > (size_t)max_size[2])
@@ -55,20 +55,20 @@ void	print_list(t_file **filearr, int i, int size[4])
 		filearr[i]->time, filearr[i]->filename);
 }
 
-void	print_files(t_file **filearr, unsigned int total, t_flags *new)
+void	print_files(t_file **filearr, unsigned int total, int *flags)
 {
 	int i;
 	int size[4];
 
 	i = 0;
-	set_maxlen(filearr, size, new);
-	if (new->l_flag == 1)
+	set_maxlen(filearr, size, flags);
+	if (*flags & l_flag)
 		ft_printf("total %d\n", total);
 	while (filearr[i] != NULL)
 	{
-		if (check_a_flag(filearr[i]->filename, new) == 1)
+		if (check_a_flag(filearr[i]->filename, flags) == 1)
 		{
-			if (new->l_flag == 1)
+			if (*flags & l_flag)
 				print_list(filearr, i, size);
 			else
 				ft_printf("%s\n", filearr[i]->filename);

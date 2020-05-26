@@ -13,7 +13,7 @@
 #include "./libft/libft.h"
 #include "ft_ls.h"
 
-void	get_path_list(t_list **head, char *basepath, t_flags *new, char *tmp)
+void	get_path_list(t_list **head, char *basepath, int *flags, char *tmp)
 {
 	DIR				*dir;
 	struct dirent	*list;
@@ -30,7 +30,7 @@ void	get_path_list(t_list **head, char *basepath, t_flags *new, char *tmp)
 		if (!(path = ft_strjoin(basepath, list->d_name)) ||
 				stat(path, &buf) == -1)
 			print_error(errno);
-		if (S_ISDIR(buf.st_mode) && check_dir(list->d_name, new) == 1)
+		if (S_ISDIR(buf.st_mode) && check_dir(list->d_name, flags) == 1)
 		{
 			!(tmp = ft_strjoin(path, "/")) ? print_error(errno) :
 				push(head, tmp);

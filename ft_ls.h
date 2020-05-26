@@ -25,6 +25,12 @@
 # include <time.h>
 # include <stdio.h>
 
+# define a_flag (1 << 0)
+# define l_flag (1 << 1)
+# define r_flag (1 << 2)
+# define R_flag (1 << 3)
+# define t_flag (1 << 4)
+
 typedef struct	s_list
 {
 	char			*path;
@@ -44,37 +50,28 @@ typedef struct	s_file
 	char	*linked_name;
 }				t_file;
 
-typedef struct	s_flags
-{
-	int l_flag;
-	int rec_flag;
-	int r_flag;
-	int t_flag;
-	int a_flag;
-}				t_flags;
-
-int				check_a_flag(char *filename, t_flags *new);
 int				check_path(char *path);
 int				count_not_alpha(char *str);
-int				check_dir(char *filename, t_flags *new);
+int				check_a_flag(char *filename, int *flags);
+int				check_dir(char *filename, int *flags);
+int				create_arr_data(t_file **filearr, char *path, int *flags, DIR *dir);
 
 void			push(t_list **head, char *path);
-void			create_arr(char *path, t_flags *new);
-void			get_path_list(t_list **head, char *basepath, t_flags *new,
-				char *tmp);
 void			destroy_list(t_list *head);
 void			set_file_struct(t_file *file, struct dirent *fileinfo,
 				struct stat *buf, char *path);
-void			print_files(t_file **filearr, unsigned int total, t_flags *new);
-void			set_flag_struct(t_flags *new);
 void			print_error(int errnum);
 void			sort_arr_name(t_file **arr);
 void			sort_mod_arr_name(t_file **arr);
 void			sort_rev_arr_name(t_file **arr);
-void			fill_flag_struct(char *argv, t_flags *new);
-void			print_files(t_file **filearr, unsigned int total, t_flags *new);
-void			set_maxlen(t_file **filearr, int max_size[4], t_flags *new);
 void			print_list(t_file **filearr, int i, int size[4]);
+void			set_flags(char *argv, int *flags);
+void			print_files(t_file **filearr, unsigned int total, int *flags);
+void			set_maxlen(t_file **filearr, int max_size[4], int *flags);
+void			check_argv(char **argv, int *flags);
+void			recursive_list(char *basepath, int *flags);
+void			create_arr(char *path, int *flags);
+void			get_path_list(t_list **head, char *basepath, int *flags, char *tmp);
 
 t_list			*create_path_list(t_list **head, char *path);
 t_list			*ft_create_elem(char *path);

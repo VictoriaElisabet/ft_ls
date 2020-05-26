@@ -61,7 +61,7 @@ char	*set_linked_name(char *path, struct stat *buf)
 	return (tmp);
 }
 
-void	set_flag_struct(t_flags *new)
+/*void	set_flag_struct(t_flags *new)
 {
 	new->l_flag = 0;
 	new->rec_flag = 0;
@@ -93,6 +93,43 @@ void	fill_flag_struct(char *argv, t_flags *new)
 			ft_printf("Try 'ls --help' for more information\n");
 			exit(EXIT_FAILURE);
 		}
+		i++;
+	}
+}*/
+
+int		ft_strindex(char *str, int c)
+{
+	int i;
+	int counter;
+
+	i = 0;
+	counter = 0;
+	while (str[i] != '\0')
+	{
+		if (str[i] == c)
+			return (counter);
+		counter++;
+		i++;
+	}
+	return (-1);
+}
+
+void	set_flags(char *argv, int *flags)
+{
+	int i;
+	int n;
+
+	i = 1;
+	n = 0;
+	while (argv[i] != '\0')
+	{
+		if ((n = ft_strindex("alrRt", argv[i])) == -1)
+		{
+			ft_printf("./ft_ls: invalid option -- '%c'\n", argv[i]);
+			ft_printf("Try 'ls --help' for more information\n");
+			exit(EXIT_FAILURE);
+		}
+		*flags |= 1 << n;
 		i++;
 	}
 }

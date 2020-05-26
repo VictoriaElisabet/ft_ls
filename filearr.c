@@ -80,7 +80,7 @@ static void	destroy_filearr(t_file **filearr)
 	free(filearr);
 }
 
-int			create_arr_data(t_file **filearr, char *path, t_flags *new,
+int			create_arr_data(t_file **filearr, char *path, int *flags,
 			DIR *dir)
 {
 	int				i;
@@ -95,7 +95,7 @@ int			create_arr_data(t_file **filearr, char *path, t_flags *new,
 	{
 		if (!(tmp = ft_strjoin(path, test3->d_name)) || lstat(tmp, &buf) == -1)
 			print_error(errno);
-		if (check_a_flag(test3->d_name, new) == 1)
+		if (check_a_flag(test3->d_name, flags) == 1)
 			total = total + buf.st_blocks;
 		if (!(filearr[i] = (t_file*)malloc(sizeof(t_file))))
 			print_error(errno);
@@ -109,7 +109,7 @@ int			create_arr_data(t_file **filearr, char *path, t_flags *new,
 	return (total);
 }
 
-void		create_arr(char *path, t_flags *new)
+void		create_arr(char *path, int *flags)
 {
 	t_file			**filearr;
 	DIR				*dir;
@@ -121,14 +121,14 @@ void		create_arr(char *path, t_flags *new)
 		ft_printf("ft_ls: cannot access '%s': ", path);
 		print_error(errno);
 	}
-	if (new->rec_flag == 1)
+	if(*flags & R_flag)
 		ft_printf("\n%s:\n", path);
 	if (!(filearr = (t_file**)malloc(count_files(path) * sizeof(t_file*) + 1)))
 		print_error(errno);
-	total = create_arr_data(filearr, path, new, dir);
-	new->t_flag == 1 ? sort_mod_arr_name(filearr) : sort_arr_name(filearr);
-	if (new->r_flag == 1)
+	total = create_arr_data(filearr, path, flags, dir);
+	(*flags & t_flag) ? sort_mod_arr_name(filearr) : sort_arr_name(filearr);
+	if (*flags & r_flag)
 		sort_rev_arr_name(filearr);
-	print_files(filearr, total, new);
+	print_files(filearr, total, flags);
 	destroy_filearr(filearr);
 }
