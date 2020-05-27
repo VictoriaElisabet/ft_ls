@@ -56,6 +56,7 @@ int				check_a_flag(char *filename, int *flags);
 int				check_dir(char *filename, int *flags);
 int				create_arr_data(t_file **filearr, char *path,
 				int *flags, DIR *dir);
+int				create_argv_list(t_list **begin, char **argv, int i);
 
 void			push(t_list **head, char *path);
 void			destroy_list(t_list *head);
@@ -74,6 +75,7 @@ void			recursive_list(char *basepath, int *flags);
 void			create_arr(char *path, int *flags);
 void			get_path_list(t_list **head, char *basepath,
 				int *flags, char *tmp);
+void			sort_argv_list(t_list *head, int *flags, int i);
 
 t_list			*create_path_list(t_list **head, char *path);
 t_list			*ft_create_elem(char *path);
