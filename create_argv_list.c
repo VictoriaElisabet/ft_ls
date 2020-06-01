@@ -39,7 +39,7 @@ void	print_reg_files(t_list *reg_files, int *flags)
 		ft_printf("%s  ", sort->path);
 		sort = sort->next;
 	}
-	ft_printf("\n\n");
+	ft_printf("\n");
 }
 
 int		create_argv_list(t_list **begin, char **argv, int i, int *flags)
@@ -65,6 +65,8 @@ int		create_argv_list(t_list **begin, char **argv, int i, int *flags)
 	}
 	if (reg_files != NULL)
 		print_reg_files(reg_files, flags);
+	if (reg_files != NULL && begin != NULL)
+		ft_printf("\n");
 	return (i);
 }
 

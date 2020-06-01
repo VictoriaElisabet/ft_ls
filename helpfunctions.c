@@ -32,9 +32,10 @@ int		check_dir(char *filename, int *flags)
 
 int		check_a_flag(char *filename, int *flags)
 {
-	if ((ft_strcmp(filename, ".") != 0 && ft_strcmp(filename, "..") != 0) ||
+	if ((ft_strcmp(filename, ".") != 0 && ft_strcmp(filename, "..") != 0
+		&& filename[0] != '.') ||
 		((*flags & A_FLAG) == 1 && (ft_strcmp(filename, ".") == 0 ||
-		ft_strcmp(filename, "..") == 0)))
+		ft_strcmp(filename, "..") == 0 || filename[0] == '.')))
 		return (1);
 	else
 		return (0);

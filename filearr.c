@@ -49,17 +49,11 @@ static int	count_files(char *path)
 	{
 		ft_printf("ft_ls: cannot access '%s' : ", path);
 		perror("");
-		exit(EXIT_FAILURE);
 	}
 	while ((test2 = readdir(dir)) != NULL)
-	{
 		i++;
-	}
 	if (closedir(dir) == -1)
-	{
-		strerror(errno);
-		exit(EXIT_FAILURE);
-	}
+		print_error(errno);
 	return (i);
 }
 
