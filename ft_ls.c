@@ -47,10 +47,7 @@ int		main(int argc, char **argv)
 
 	flags = 0;
 	if (argc > 1)
-	{
-		if (ft_strcmp(argv[0], "./ft_ls") == 0)
-			check_argv(argv, &flags);
-	}
+		check_argv(argv, &flags);
 	else
 		recursive_list("./", &flags);
 }
