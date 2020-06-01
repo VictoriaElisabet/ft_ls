@@ -24,22 +24,47 @@ int		check_path(char *path)
 		return (-1);
 }
 
-int		create_argv_list(t_list **begin, char **argv, int i)
+void	print_reg_files(t_list *reg_files, int *flags)
 {
-	DIR		*dir;
+	t_list	*sort;
+	char	*tmp;
 
+	tmp = NULL;
+	(*flags & T_FLAG) ? (sort = sort_path_time_list(reg_files, tmp)) :
+		(sort = sort_path_list(reg_files));
+	if (*flags & R_FLAG)
+		sort = sort_rev_path_list(reg_files);
+	while (sort != NULL)
+	{
+		ft_printf("%s  ", sort->path);
+		sort = sort->next;
+	}
+	ft_printf("\n\n");
+}
+
+int		create_argv_list(t_list **begin, char **argv, int i, int *flags)
+{
+	struct stat		buf;
+	t_list			*reg_files;
+
+	reg_files = NULL;
+	if (argv[i] == NULL)
+		push(begin, "./");
 	while (argv[i] != NULL)
 	{
-		if (!(dir = opendir(argv[i])))
+		if (lstat(argv[i], &buf) == -1)
 		{
 			ft_printf("ft_ls: cannot access '%s': ", argv[i]);
 			perror("");
 		}
+		else if (S_ISREG(buf.st_mode))
+			push(&reg_files, argv[i]);
 		else
 			push(begin, argv[i]);
-		closedir(dir);
 		i++;
 	}
+	if (reg_files != NULL)
+		print_reg_files(reg_files, flags);
 	return (i);
 }
 
@@ -87,6 +112,6 @@ void	check_argv(char **argv, int *flags)
 			break ;
 		i++;
 	}
-	i = create_argv_list(&begin, argv, i) - i;
+	i = create_argv_list(&begin, argv, i, flags) - i;
 	sort_argv_list(begin, flags, i);
 }

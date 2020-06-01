@@ -56,7 +56,7 @@ int				check_a_flag(char *filename, int *flags);
 int				check_dir(char *filename, int *flags);
 int				create_arr_data(t_file **filearr, char *path,
 				int *flags, DIR *dir);
-int				create_argv_list(t_list **begin, char **argv, int i);
+int				create_argv_list(t_list **begin, char **argv, int i, int *flags);
 
 void			push(t_list **head, char *path);
 void			destroy_list(t_list *head);
