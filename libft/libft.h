@@ -59,8 +59,8 @@ char		*ft_uitoa(unsigned long long n);
 char		*ft_octal(long long n);
 char		*ft_hex(long long n);
 char		**ft_strsplit(char const *s, char c);
-char	    *ft_string_tolower(char *str);
-char	    *ft_string_toupper(char *str);
+char		*ft_string_tolower(char *str);
+char		*ft_string_toupper(char *str);
 
 int			ft_strcmp(const char *s1, const char *s2);
 int			ft_strncmp(const char *s1, const char *s2, size_t n);
@@ -76,7 +76,7 @@ int			ft_tolower(int c);
 int			ft_strequ(char const *s1, char const *s2);
 int			ft_strnequ(char const *s1, char const *s2, size_t n);
 int			ft_count_digits(long long n, int base);
-int         ft_count_udigits(unsigned long long n, int base);
+int			ft_count_udigits(unsigned long long n, int base);
 
 long long	ft_power_of(int base, int exp);
 
