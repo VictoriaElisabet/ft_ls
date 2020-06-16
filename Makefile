@@ -19,7 +19,7 @@ all: $(NAME)
 	
 $(NAME):
 	make -C ./libft
-	gcc -Wextra -Werror -Wall -I $(INC) $(SRC) -L libft/ -lft -o $(NAME) -ggdb3
+	gcc -Wextra -Werror -Wall -I $(INC) $(SRC) -L libft/ -lft -o $(NAME)
 
 clean:
 	rm -f $(OBJECTS)
