@@ -49,6 +49,7 @@ int		create_argv_list(t_list **begin, char **argv, int i, int *flags)
 		print_reg_files(reg_files, flags);
 	if (reg_files != NULL && begin != NULL)
 		ft_printf("\n");
+	destroy_list(reg_files);
 	return (i);
 }
 

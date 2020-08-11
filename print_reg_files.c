@@ -88,6 +88,5 @@ void	print_reg_files(t_list *reg_files, int *flags)
 			ft_printf("%s\n", sort->path);
 			sort = sort->next;
 		}
-		ft_printf("\n");
 	}
 }
