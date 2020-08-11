@@ -6,7 +6,7 @@
 /*   By: vgrankul <vgrankul@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/18 10:24:05 by vgrankul          #+#    #+#             */
-/*   Updated: 2020/02/27 13:01:07 by vgrankul         ###   ########.fr       */
+/*   Updated: 2020/08/11 10:33:30 by vgrankul         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,7 @@ typedef struct	s_file
 	int		links;
 	char	*uid;
 	char	*guid;
-	int		size;
+	long	size;
 	char	*time;
 	char	*filename;
 	long	mod_time;

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   filearr.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vgrankul <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: vgrankul <vgrankul@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/22 11:28:19 by vgrankul          #+#    #+#             */
-/*   Updated: 2019/10/31 13:49:20 by vgrankul         ###   ########.fr       */
+/*   Updated: 2020/08/11 12:12:44 by vgrankul         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,17 +20,19 @@ void		set_file_struct(t_file *file, struct dirent *fileinfo,
 	struct group	*groupid;
 
 	if (!(userid = getpwuid(buf->st_uid)))
-		print_error(errno);
+		file->uid = ft_itoa(buf->st_uid);
+	else
+		file->uid = ft_strdup(userid->pw_name);
 	if (!(groupid = getgrgid(buf->st_gid)))
-		print_error(errno);
+		file->guid = ft_itoa(buf->st_gid);
+	else
+		file->guid = ft_strdup(groupid->gr_name);
 	if (S_ISLNK(buf->st_mode))
 		file->linked_name = set_linked_name(path, buf);
 	else
 		file->linked_name = NULL;
 	file->permissions = set_file_perm(buf);
 	file->links = buf->st_nlink;
-	file->uid = userid->pw_name;
-	file->guid = groupid->gr_name;
 	file->size = buf->st_size;
 	file->time = set_time(buf->st_mtime);
 	file->filename = fileinfo->d_name;
@@ -68,6 +70,8 @@ static void	destroy_filearr(t_file **filearr)
 			free(filearr[i]->linked_name);
 		free(filearr[i]->time);
 		free(filearr[i]->permissions);
+		free(filearr[i]->uid);
+		free(filearr[i]->guid);
 		free(filearr[i]);
 		i++;
 	}

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_ls.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vgrankul <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: vgrankul <vgrankul@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/22 11:28:19 by vgrankul          #+#    #+#             */
-/*   Updated: 2019/10/31 13:49:20 by vgrankul         ###   ########.fr       */
+/*   Updated: 2020/08/11 09:53:45 by vgrankul         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,4 +50,5 @@ int		main(int argc, char **argv)
 		check_argv(argv, &flags);
 	else
 		recursive_list("./", &flags);
+	return (0);
 }
