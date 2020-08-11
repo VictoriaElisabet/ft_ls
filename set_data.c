@@ -6,7 +6,7 @@
 /*   By: vgrankul <vgrankul@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/22 11:28:19 by vgrankul          #+#    #+#             */
-/*   Updated: 2020/08/11 11:55:45 by vgrankul         ###   ########.fr       */
+/*   Updated: 2020/08/11 12:37:57 by vgrankul         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,6 +44,12 @@ char	*set_file_perm(struct stat *buf)
 	perm_str[8] = (buf->st_mode & S_IWOTH) ? 'w' : '-';
 	perm_str[9] = (buf->st_mode & S_IXOTH) ? 'x' : '-';
 	perm_str[10] = '\0';
+	if(buf->st_mode & S_ISUID)
+		perm_str[3] = perm_str[3] == '-' ? 'S' : 's';
+	if(buf->st_mode & S_ISGID)
+		perm_str[3] = perm_str[3] == '-' ? 'S' : 's';
+	if(buf->st_mode & S_ISVTX)
+		perm_str[9] = perm_str[9] == '-' ? 'T' : 't';
 	return (perm_str);
 }
 
