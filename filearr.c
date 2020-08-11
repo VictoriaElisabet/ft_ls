@@ -13,7 +13,7 @@
 #include "./libft/libft.h"
 #include "ft_ls.h"
 
-void		set_file_struct(t_file *file, struct dirent *fileinfo,
+void		set_file_struct(t_file *file, char *filename,
 				struct stat *buf, char *path)
 {
 	struct passwd	*userid;
@@ -35,7 +35,7 @@ void		set_file_struct(t_file *file, struct dirent *fileinfo,
 	file->links = buf->st_nlink;
 	file->size = buf->st_size;
 	file->time = set_time(buf->st_mtime);
-	file->filename = fileinfo->d_name;
+	file->filename = ft_strdup(filename);
 	file->mod_time = buf->st_mtime;
 }
 
@@ -59,7 +59,7 @@ static int	count_files(char *path)
 	return (i);
 }
 
-static void	destroy_filearr(t_file **filearr)
+void		destroy_filearr(t_file **filearr)
 {
 	int i;
 
@@ -72,6 +72,7 @@ static void	destroy_filearr(t_file **filearr)
 		free(filearr[i]->permissions);
 		free(filearr[i]->uid);
 		free(filearr[i]->guid);
+		free(filearr[i]->filename);
 		free(filearr[i]);
 		i++;
 	}
@@ -97,7 +98,7 @@ int			create_arr_data(t_file **filearr, char *path, int *flags,
 			total = total + buf.st_blocks;
 		if (!(filearr[i] = (t_file*)malloc(sizeof(t_file))))
 			print_error(errno);
-		set_file_struct(filearr[i], test3, &buf, tmp);
+		set_file_struct(filearr[i], test3->d_name, &buf, tmp);
 		free(tmp);
 		i++;
 	}

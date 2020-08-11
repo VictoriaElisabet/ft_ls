@@ -24,24 +24,6 @@ int		check_path(char *path)
 		return (-1);
 }
 
-void	print_reg_files(t_list *reg_files, int *flags)
-{
-	t_list	*sort;
-	char	*tmp;
-
-	tmp = NULL;
-	(*flags & T_FLAG) ? (sort = sort_path_time_list(reg_files, tmp)) :
-		(sort = sort_path_list(reg_files));
-	if (*flags & R_FLAG)
-		sort = sort_rev_path_list(reg_files);
-	while (sort != NULL)
-	{
-		ft_printf("%s  ", sort->path);
-		sort = sort->next;
-	}
-	ft_printf("\n");
-}
-
 int		create_argv_list(t_list **begin, char **argv, int i, int *flags)
 {
 	struct stat		buf;

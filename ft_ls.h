@@ -61,13 +61,13 @@ int				create_argv_list(t_list **begin, char **argv, int i,
 
 void			push(t_list **head, char *path);
 void			destroy_list(t_list *head);
-void			set_file_struct(t_file *file, struct dirent *fileinfo,
+void			set_file_struct(t_file *file, char *filename,
 				struct stat *buf, char *path);
 void			print_error(int errnum);
 void			sort_arr_name(t_file **arr);
 void			sort_mod_arr_name(t_file **arr);
 void			sort_rev_arr_name(t_file **arr);
-void			print_list(t_file **filearr, int i, int size[4]);
+void			print_list(t_file *filearr, int size[4]);
 void			set_flags(char *argv, int *flags);
 void			print_files(t_file **filearr, unsigned int total, int *flags);
 void			set_maxlen(t_file **filearr, int max_size[4], int *flags);
@@ -77,6 +77,8 @@ void			create_arr(char *path, int *flags);
 void			get_path_list(t_list **head, char *basepath,
 				int *flags, char *tmp);
 void			sort_argv_list(t_list *head, int *flags, int i);
+void			destroy_filearr(t_file **filearr);
+void			print_reg_files(t_list *reg_files, int *flags);
 
 t_list			*create_path_list(t_list **head, char *path);
 t_list			*ft_create_elem(char *path);
