@@ -6,7 +6,7 @@
 /*   By: vgrankul <vgrankul@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/22 11:28:19 by vgrankul          #+#    #+#             */
-/*   Updated: 2020/08/11 11:32:07 by vgrankul         ###   ########.fr       */
+/*   Updated: 2020/08/12 12:11:29 by vgrankul         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,6 +46,7 @@ void	create_reg_arr(t_file **filearr, t_list *sort, int *flags)
 		sort = sort->next;
 		i++;
 	}
+	filearr[i] = NULL;
 	print_reg_list(filearr, flags);
 	destroy_filearr(filearr);
 }

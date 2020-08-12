@@ -6,7 +6,7 @@
 /*   By: vgrankul <vgrankul@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/18 10:24:05 by vgrankul          #+#    #+#             */
-/*   Updated: 2020/08/11 10:33:30 by vgrankul         ###   ########.fr       */
+/*   Updated: 2020/08/12 14:13:40 by vgrankul         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,6 +39,7 @@ typedef struct	s_list
 
 typedef struct	s_file
 {
+	char	*path;
 	char	*permissions;
 	int		links;
 	char	*uid;
@@ -48,6 +49,8 @@ typedef struct	s_file
 	char	*filename;
 	long	mod_time;
 	char	*linked_name;
+	int		minor;
+	int		major;
 }				t_file;
 
 int				check_path(char *path);
@@ -58,6 +61,7 @@ int				create_arr_data(t_file **filearr, char *path,
 				int *flags, DIR *dir);
 int				create_argv_list(t_list **begin, char **argv, int i,
 				int *flags);
+int				ft_strindex(char *str, int c);
 
 void			push(t_list **head, char *path);
 void			destroy_list(t_list *head);

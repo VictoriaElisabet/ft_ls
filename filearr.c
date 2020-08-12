@@ -6,7 +6,7 @@
 /*   By: vgrankul <vgrankul@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/22 11:28:19 by vgrankul          #+#    #+#             */
-/*   Updated: 2020/08/11 13:19:28 by vgrankul         ###   ########.fr       */
+/*   Updated: 2020/08/12 15:07:39 by vgrankul         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,11 @@ void		set_file_struct(t_file *file, char *filename,
 	struct passwd	*userid;
 	struct group	*groupid;
 
+	if (S_ISBLK(buf->st_mode) || S_ISCHR(buf->st_mode))
+	{
+		file->minor = minor(buf->st_rdev);
+		file->major = major(buf->st_rdev);
+	}
 	if (!(userid = getpwuid(buf->st_uid)))
 		file->uid = ft_itoa(buf->st_uid);
 	else
@@ -27,10 +32,9 @@ void		set_file_struct(t_file *file, char *filename,
 		file->guid = ft_itoa(buf->st_gid);
 	else
 		file->guid = ft_strdup(groupid->gr_name);
-	if (S_ISLNK(buf->st_mode))
-		file->linked_name = set_linked_name(path, buf);
-	else
-		file->linked_name = NULL;
+	file->linked_name = S_ISLNK(buf->st_mode) ? set_linked_name(path, buf) :
+	NULL;
+	file->path = ft_strdup(path);
 	file->permissions = set_file_perm(buf);
 	file->links = buf->st_nlink;
 	file->size = buf->st_size;
@@ -73,6 +77,7 @@ void		destroy_filearr(t_file **filearr)
 		free(filearr[i]->uid);
 		free(filearr[i]->guid);
 		free(filearr[i]->filename);
+		free(filearr[i]->path);
 		free(filearr[i]);
 		i++;
 	}
@@ -115,17 +120,15 @@ void		create_arr(char *path, int *flags)
 	unsigned int	total;
 
 	total = 0;
-	if (!(dir = opendir(path)))
+	if ((dir = opendir(path)) != NULL)
 	{
-		ft_printf("ft_ls: cannot access '%s': ", path);
-		print_error(errno);
+		if (!(filearr = (t_file**)malloc(count_files(path) * sizeof(t_file*) + 1)))
+			print_error(errno);
+		total = create_arr_data(filearr, path, flags, dir);
+		(*flags & T_FLAG) ? sort_mod_arr_name(filearr) : sort_arr_name(filearr);
+		if (*flags & R_FLAG)
+			sort_rev_arr_name(filearr);
+		print_files(filearr, total, flags);
+		destroy_filearr(filearr);
 	}
-	if (!(filearr = (t_file**)malloc(count_files(path) * sizeof(t_file*) + 1)))
-		print_error(errno);
-	total = create_arr_data(filearr, path, flags, dir);
-	(*flags & T_FLAG) ? sort_mod_arr_name(filearr) : sort_arr_name(filearr);
-	if (*flags & R_FLAG)
-		sort_rev_arr_name(filearr);
-	print_files(filearr, total, flags);
-	destroy_filearr(filearr);
 }

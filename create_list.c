@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   create_list.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vgrankul <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: vgrankul <vgrankul@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/22 11:28:19 by vgrankul          #+#    #+#             */
-/*   Updated: 2019/10/31 13:49:20 by vgrankul         ###   ########.fr       */
+/*   Updated: 2020/08/12 15:07:14 by vgrankul         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,26 +20,27 @@ void	get_path_list(t_list **head, char *basepath, int *flags, char *tmp)
 	struct stat		buf;
 	char			*path;
 
-	if (!(dir = opendir(basepath)))
+	if ((dir = opendir(basepath)) != NULL)
 	{
-		ft_printf("ft_ls: cannot access '%s' : ", basepath);
-		print_error(errno);
-	}
-	while ((list = readdir(dir)) != NULL)
-	{
-		if (!(path = ft_strjoin(basepath, list->d_name)) ||
-				lstat(path, &buf) == -1)
-			print_error(errno);
-		if (S_ISDIR(buf.st_mode) && check_dir(list->d_name, flags) == 1)
+		while ((list = readdir(dir)) != NULL)
 		{
-			!(tmp = ft_strjoin(path, "/")) ? print_error(errno) :
-				push(head, tmp);
-			free(tmp);
+			if (!(path = ft_strjoin(basepath, list->d_name)) ||
+			lstat(path, &buf) == -1)
+				print_error(errno);
+			if (S_ISDIR(buf.st_mode) && check_dir(list->d_name, flags) == 1)
+			{
+				!(tmp = ft_strjoin(path, "/")) ? print_error(errno) :
+					push(head, tmp);
+				free(tmp);
+			}
+			free(path);
 		}
-		free(path);
+		if (closedir(dir) == -1)
+			print_error(errno);
 	}
-	if (closedir(dir) == -1)
-		print_error(errno);
+	else
+		ft_printf("ft_ls: cannot access '%s' : %s\n", basepath, strerror(errno));
+
 }
 
 void	push(t_list **head, char *path)

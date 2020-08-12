@@ -6,7 +6,7 @@
 /*   By: vgrankul <vgrankul@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/22 11:28:19 by vgrankul          #+#    #+#             */
-/*   Updated: 2020/08/11 11:32:07 by vgrankul         ###   ########.fr       */
+/*   Updated: 2020/08/12 14:41:58 by vgrankul         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,19 +40,27 @@ void	set_maxlen(t_file **filearr, int max_size[4], int *flags)
 
 void	print_list(t_file *filearr, int size[4])
 {
-	if (filearr->linked_name != NULL)
+	if (filearr->linked_name != NULL && (filearr->permissions[0] == 'c' ||
+	filearr->permissions[0] == 'b'))
+		ft_printf("%s %*d %*s %*s %*d,%*d %s %s -> %s\n",
+		filearr->permissions, size[0], filearr->links, size[2], filearr->uid,
+		size[3], filearr->guid, 4, filearr->major, 4, filearr->minor,
+		filearr->time, filearr->filename, filearr->linked_name);
+	else if (filearr->linked_name == NULL && (filearr->permissions[0] == 'c' ||
+	filearr->permissions[0] == 'b'))
+		ft_printf("%s %*d %*s %*s %*d,%*d %s %s\n",
+		filearr->permissions, size[0], filearr->links, size[2],
+		filearr->uid, size[3], filearr->guid, 4, filearr->major,
+		4, filearr->minor, filearr->time, filearr->filename);
+	else if (filearr->linked_name != NULL)
 		ft_printf("%s %*d %*s %*s %*ld %s %s -> %s\n",
-		filearr->permissions, size[0],
-		filearr->links, size[2], filearr->uid,
-		size[3], filearr->guid, size[1],
-		filearr->size, filearr->time,
-		filearr->filename, filearr->linked_name);
+		filearr->permissions, size[0], filearr->links, size[2],
+		filearr->uid, size[3], filearr->guid, size[1], filearr->size,
+		filearr->time, filearr->filename, filearr->linked_name);
 	else
 		ft_printf("%s %*d %*s %*s %*ld %s %s\n", filearr->permissions,
-		size[0], filearr->links, size[2],
-		filearr->uid, size[3], filearr->guid,
-		size[1], filearr->size,
-		filearr->time, filearr->filename);
+		size[0], filearr->links, size[2], filearr->uid, size[3], filearr->guid,
+		size[1], filearr->size, filearr->time, filearr->filename);
 }
 
 void	print_files(t_file **filearr, unsigned int total, int *flags)

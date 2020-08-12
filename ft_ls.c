@@ -6,12 +6,18 @@
 /*   By: vgrankul <vgrankul@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/22 11:28:19 by vgrankul          #+#    #+#             */
-/*   Updated: 2020/08/11 09:53:45 by vgrankul         ###   ########.fr       */
+/*   Updated: 2020/08/12 14:22:30 by vgrankul         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "./libft/libft.h"
 #include "ft_ls.h"
+
+void	print_error(int errnum)
+{
+	ft_printf("%s\n", strerror(errnum));
+	exit(EXIT_FAILURE);
+}
 
 void	recursive_list(char *basepath, int *flags)
 {

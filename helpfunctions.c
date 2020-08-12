@@ -3,20 +3,31 @@
 /*                                                        :::      ::::::::   */
 /*   helpfunctions.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vgrankul <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: vgrankul <vgrankul@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/22 11:28:19 by vgrankul          #+#    #+#             */
-/*   Updated: 2019/10/31 13:49:20 by vgrankul         ###   ########.fr       */
+/*   Updated: 2020/08/12 15:16:29 by vgrankul         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "./libft/libft.h"
 #include "ft_ls.h"
 
-void	print_error(int errnum)
+int		ft_strindex(char *str, int c)
 {
-	ft_printf("%s\n", strerror(errnum));
-	exit(EXIT_FAILURE);
+	int i;
+	int counter;
+
+	i = 0;
+	counter = 0;
+	while (str[i] != '\0')
+	{
+		if (str[i] == c)
+			return (counter);
+		counter++;
+		i++;
+	}
+	return (-1);
 }
 
 int		check_dir(char *filename, int *flags)
@@ -67,13 +78,15 @@ char	*remove_not_alpha(char *str)
 	i = 0;
 	j = 0;
 	len = ft_strlen(str) - count_not_alpha(str);
-	tmp = (char*)malloc(len * sizeof(char) + 1);
-	while (str[i] != '\0')
+	if((tmp = (char*)malloc(len * sizeof(char) + 1)))
 	{
-		if (ft_isalpha(str[i]) == 1)
-			tmp[j++] = str[i];
-		i++;
+		while (str[i] != '\0')
+		{
+			if (ft_isalpha(str[i]) == 1)
+				tmp[j++] = str[i];
+			i++;
+		}
+		tmp[j] = '\0';
 	}
-	tmp[j] = '\0';
 	return (tmp);
 }

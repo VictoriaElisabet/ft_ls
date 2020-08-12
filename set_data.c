@@ -6,7 +6,7 @@
 /*   By: vgrankul <vgrankul@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/22 11:28:19 by vgrankul          #+#    #+#             */
-/*   Updated: 2020/08/11 12:37:57 by vgrankul         ###   ########.fr       */
+/*   Updated: 2020/08/12 14:13:08 by vgrankul         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,18 +22,27 @@ char	*set_time(long int time)
 	return (time_str);
 }
 
+void	set_file_attr(char *perm_str, struct stat *buf)
+{
+	if (S_ISDIR(buf->st_mode))
+		perm_str[0] = 'd';
+	else if (S_ISLNK(buf->st_mode))
+		perm_str[0] = 'l';
+	else if (S_ISBLK(buf->st_mode))
+		perm_str[0] = 'b';
+	else if (S_ISCHR(buf->st_mode))
+		perm_str[0] = 'c';
+	else
+		perm_str[0] = '-';
+}
+
 char	*set_file_perm(struct stat *buf)
 {
 	char *perm_str;
 
 	if (!(perm_str = (char*)malloc(10 * sizeof(char) + 1)))
 		print_error(errno);
-	if (S_ISDIR(buf->st_mode))
-		perm_str[0] = 'd';
-	else if (S_ISLNK(buf->st_mode))
-		perm_str[0] = 'l';
-	else
-		perm_str[0] = '-';
+	set_file_attr(&perm_str[0], buf);
 	perm_str[1] = (buf->st_mode & S_IRUSR) ? 'r' : '-';
 	perm_str[2] = (buf->st_mode & S_IWUSR) ? 'w' : '-';
 	perm_str[3] = (buf->st_mode & S_IXUSR) ? 'x' : '-';
@@ -44,11 +53,11 @@ char	*set_file_perm(struct stat *buf)
 	perm_str[8] = (buf->st_mode & S_IWOTH) ? 'w' : '-';
 	perm_str[9] = (buf->st_mode & S_IXOTH) ? 'x' : '-';
 	perm_str[10] = '\0';
-	if(buf->st_mode & S_ISUID)
+	if (buf->st_mode & S_ISUID)
 		perm_str[3] = perm_str[3] == '-' ? 'S' : 's';
-	if(buf->st_mode & S_ISGID)
+	if (buf->st_mode & S_ISGID)
 		perm_str[3] = perm_str[3] == '-' ? 'S' : 's';
-	if(buf->st_mode & S_ISVTX)
+	if (buf->st_mode & S_ISVTX)
 		perm_str[9] = perm_str[9] == '-' ? 'T' : 't';
 	return (perm_str);
 }
@@ -65,23 +74,6 @@ char	*set_linked_name(char *path, struct stat *buf)
 	else
 		tmp[len] = '\0';
 	return (tmp);
-}
-
-int		ft_strindex(char *str, int c)
-{
-	int i;
-	int counter;
-
-	i = 0;
-	counter = 0;
-	while (str[i] != '\0')
-	{
-		if (str[i] == c)
-			return (counter);
-		counter++;
-		i++;
-	}
-	return (-1);
 }
 
 void	set_flags(char *argv, int *flags)
