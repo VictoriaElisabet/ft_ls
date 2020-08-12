@@ -6,7 +6,7 @@
 /*   By: vgrankul <vgrankul@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/22 11:28:19 by vgrankul          #+#    #+#             */
-/*   Updated: 2020/08/12 14:41:58 by vgrankul         ###   ########.fr       */
+/*   Updated: 2020/08/12 18:18:17 by vgrankul         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,7 +70,10 @@ void	print_files(t_file **filearr, unsigned int total, int *flags)
 
 	i = 0;
 	set_maxlen(filearr, size, flags);
-	if (*flags & L_FLAG)
+	if (filearr[2] != NULL && (*flags & L_FLAG))
+		ft_printf("total %d\n", total);
+	else if (check_a_flag(filearr[i]->filename, flags) == 1 &&
+	(*flags & L_FLAG))
 		ft_printf("total %d\n", total);
 	while (filearr[i] != NULL)
 	{

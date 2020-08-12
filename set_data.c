@@ -6,19 +6,37 @@
 /*   By: vgrankul <vgrankul@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/22 11:28:19 by vgrankul          #+#    #+#             */
-/*   Updated: 2020/08/12 14:13:08 by vgrankul         ###   ########.fr       */
+/*   Updated: 2020/08/12 18:17:38 by vgrankul         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "./libft/libft.h"
 #include "ft_ls.h"
 
-char	*set_time(long int time)
+char	*set_time(long int ftime)
 {
-	char *time_str;
+	char	*time_str;
+	time_t	today;
+	char	*date;
+	char	*year;
 
-	if (!(time_str = ft_strsub(ctime(&time), 4, 12)))
-		print_error(errno);
+	today = time(NULL);
+	if (ftime - today > 15778476 || ftime - today < -15778476)
+	{
+		if (!(date = ft_strsub(ctime(&ftime), 4, 7)))
+			print_error(errno);
+		if (!(year = ft_strsub(ctime(&ftime), 19, 5)))
+			print_error(errno);
+		if (!(time_str = ft_strjoin(date, year)))
+			print_error(errno);
+		free(date);
+		free(year);
+	}
+	else
+	{
+		if (!(time_str = ft_strsub(ctime(&ftime), 4, 12)))
+			print_error(errno);
+	}
 	return (time_str);
 }
 
