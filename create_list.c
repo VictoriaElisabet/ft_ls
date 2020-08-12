@@ -6,7 +6,7 @@
 /*   By: vgrankul <vgrankul@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/22 11:28:19 by vgrankul          #+#    #+#             */
-/*   Updated: 2020/08/12 15:07:14 by vgrankul         ###   ########.fr       */
+/*   Updated: 2020/08/12 15:25:29 by vgrankul         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,8 +39,7 @@ void	get_path_list(t_list **head, char *basepath, int *flags, char *tmp)
 			print_error(errno);
 	}
 	else
-		ft_printf("ft_ls: cannot access '%s' : %s\n", basepath, strerror(errno));
-
+		ft_printf("ft_ls: '%s' : %s\n", basepath, strerror(errno));
 }
 
 void	push(t_list **head, char *path)

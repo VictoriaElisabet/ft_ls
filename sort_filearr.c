@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   sort_filearr.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vgrankul <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: vgrankul <vgrankul@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/22 11:28:19 by vgrankul          #+#    #+#             */
-/*   Updated: 2019/10/31 13:49:20 by vgrankul         ###   ########.fr       */
+/*   Updated: 2020/08/12 16:02:17 by vgrankul         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,10 +36,8 @@ void	sort_arr_name(t_file **arr)
 		j = i;
 		while (arr[j + 1] != NULL)
 		{
-			if (!(str1 = ft_string_tolower(remove_not_alpha(arr[i]->filename)))
-			||
-			!(str2 = ft_string_tolower(remove_not_alpha(arr[j + 1]->filename))))
-				print_error(errno);
+			str1 = ft_strdup(arr[i]->filename);
+			str2 = ft_strdup(arr[j + 1]->filename);
 			if (ft_strcmp(str1, str2) > 0)
 				swap_files(arr, i, j);
 			free(str1);

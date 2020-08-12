@@ -6,7 +6,7 @@
 /*   By: vgrankul <vgrankul@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/22 11:28:19 by vgrankul          #+#    #+#             */
-/*   Updated: 2020/08/11 13:18:52 by vgrankul         ###   ########.fr       */
+/*   Updated: 2020/08/12 15:43:01 by vgrankul         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,7 @@ int		create_argv_list(t_list **begin, char **argv, int i, int *flags)
 	}
 	if (reg_files != NULL)
 		print_reg_files(reg_files, flags);
-	if (reg_files != NULL && begin != NULL)
+	if (*begin != NULL)
 		ft_printf("\n");
 	destroy_list(reg_files);
 	return (i);

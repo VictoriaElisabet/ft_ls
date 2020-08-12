@@ -6,7 +6,7 @@
 /*   By: vgrankul <vgrankul@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/22 11:28:19 by vgrankul          #+#    #+#             */
-/*   Updated: 2020/08/12 15:07:39 by vgrankul         ###   ########.fr       */
+/*   Updated: 2020/08/12 15:24:02 by vgrankul         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -122,7 +122,8 @@ void		create_arr(char *path, int *flags)
 	total = 0;
 	if ((dir = opendir(path)) != NULL)
 	{
-		if (!(filearr = (t_file**)malloc(count_files(path) * sizeof(t_file*) + 1)))
+		if (!(filearr = (t_file**)
+		malloc(count_files(path) * sizeof(t_file*) + 1)))
 			print_error(errno);
 		total = create_arr_data(filearr, path, flags, dir);
 		(*flags & T_FLAG) ? sort_mod_arr_name(filearr) : sort_arr_name(filearr);

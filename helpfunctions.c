@@ -6,7 +6,7 @@
 /*   By: vgrankul <vgrankul@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/22 11:28:19 by vgrankul          #+#    #+#             */
-/*   Updated: 2020/08/12 15:16:29 by vgrankul         ###   ########.fr       */
+/*   Updated: 2020/08/12 15:23:16 by vgrankul         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,7 +78,7 @@ char	*remove_not_alpha(char *str)
 	i = 0;
 	j = 0;
 	len = ft_strlen(str) - count_not_alpha(str);
-	if((tmp = (char*)malloc(len * sizeof(char) + 1)))
+	if ((tmp = (char*)malloc(len * sizeof(char) + 1)))
 	{
 		while (str[i] != '\0')
 		{
