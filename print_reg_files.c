@@ -35,14 +35,17 @@ void	create_reg_arr(t_file **filearr, t_list *sort, int *flags)
 	i = 0;
 	while (sort != NULL)
 	{
-		if (lstat(sort->path, &buf) == -1)
+		if (lstat(sort->path, &buf) != -1)
+		{
+			if (!(filearr[i] = (t_file*)malloc(sizeof(t_file))))
+				print_error(errno);
+			set_file_struct(filearr[i], sort->path, &buf, sort->path);
+		}
+		else
 		{
 			ft_printf("ft_ls: cannot access '%s': ", sort->path);
-			perror("");
-		}
-		if (!(filearr[i] = (t_file*)malloc(sizeof(t_file))))
 			print_error(errno);
-		set_file_struct(filearr[i], sort->path, &buf, sort->path);
+		}
 		sort = sort->next;
 		i++;
 	}
