@@ -85,12 +85,18 @@ char	*set_linked_name(char *path, struct stat *buf)
 	char	*tmp;
 	ssize_t	len;
 
-	if (!(tmp = (char*)malloc(buf->st_size * sizeof(char) + 1)))
-		print_error(errno);
-	if ((len = readlink(path, tmp, buf->st_size)) < 0)
-		print_error(errno);
-	else
-		tmp[len] = '\0';
+	tmp = NULL;
+	if ((tmp = (char*)malloc(buf->st_size * sizeof(char) + 1)))
+	{
+		if ((len = readlink(path, tmp, buf->st_size)) < 0)
+		{
+			free(tmp);
+			ft_printf("./ft_ls: cannot read symbolic link '%s': %s\n",path, strerror(errno));
+			return(NULL);
+		}
+		else
+			tmp[len] = '\0';
+	}
 	return (tmp);
 }
 

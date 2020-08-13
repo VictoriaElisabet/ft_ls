@@ -34,15 +34,16 @@ int		create_argv_list(t_list **begin, char **argv, int i, int *flags)
 		push(begin, "./");
 	while (argv[i] != NULL)
 	{
-		if (lstat(argv[i], &buf) == -1)
+		if (lstat(argv[i], &buf) != -1)
 		{
-			ft_printf("ft_ls: cannot access '%s': ", argv[i]);
-			perror("");
+			if (!(S_ISDIR(buf.st_mode)))
+				push(&reg_files, argv[i]);
+			else
+				push(begin, argv[i]);
 		}
-		else if (!(S_ISDIR(buf.st_mode)))
-			push(&reg_files, argv[i]);
 		else
-			push(begin, argv[i]);
+			ft_printf("ft_ls: cannot access '%s': %s", argv[i], strerror(errno));
+		
 		i++;
 	}
 	if (reg_files != NULL)

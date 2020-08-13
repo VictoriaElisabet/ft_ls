@@ -51,15 +51,13 @@ static int	count_files(char *path)
 
 	i = 0;
 	dir = opendir(path);
-	if (!(dir))
+	if (dir)
 	{
-		ft_printf("ft_ls: cannot access '%s' : ", path);
-		perror("");
+		while ((test2 = readdir(dir)) != NULL)
+			i++;
+		if (closedir(dir) == -1)
+			print_error(errno);
 	}
-	while ((test2 = readdir(dir)) != NULL)
-		i++;
-	if (closedir(dir) == -1)
-		print_error(errno);
 	return (i);
 }
 
@@ -97,14 +95,17 @@ int			create_arr_data(t_file **filearr, char *path, int *flags,
 	total = 0;
 	while ((test3 = readdir(dir)) != NULL)
 	{
-		if (!(tmp = ft_strjoin(path, test3->d_name)) || lstat(tmp, &buf) == -1)
+		if (!(tmp = ft_strjoin(path, test3->d_name)))
 			print_error(errno);
-		if (check_a_flag(test3->d_name, flags) == 1)
-			total = total + buf.st_blocks;
-		if (!(filearr[i] = (t_file*)malloc(sizeof(t_file))))
-			print_error(errno);
-		set_file_struct(filearr[i], test3->d_name, &buf, tmp);
-		free(tmp);
+		if (lstat(tmp, &buf) != -1)
+		{
+			if (check_a_flag(test3->d_name, flags) == 1)
+				total = total + buf.st_blocks;
+			if (!(filearr[i] = (t_file*)malloc(sizeof(t_file))))
+				print_error(errno);
+			set_file_struct(filearr[i], test3->d_name, &buf, tmp);
+			free(tmp);
+		}
 		i++;
 	}
 	filearr[i] = NULL;

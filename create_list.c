@@ -24,14 +24,16 @@ void	get_path_list(t_list **head, char *basepath, int *flags, char *tmp)
 	{
 		while ((list = readdir(dir)) != NULL)
 		{
-			if (!(path = ft_strjoin(basepath, list->d_name)) ||
-			lstat(path, &buf) == -1)
+			if (!(path = ft_strjoin(basepath, list->d_name)))
 				print_error(errno);
-			if (S_ISDIR(buf.st_mode) && check_dir(list->d_name, flags) == 1)
+			if(lstat(path, &buf) != -1)
 			{
-				!(tmp = ft_strjoin(path, "/")) ? print_error(errno) :
-					push(head, tmp);
-				free(tmp);
+				if (S_ISDIR(buf.st_mode) && check_dir(list->d_name, flags) == 1)
+				{
+					!(tmp = ft_strjoin(path, "/")) ? print_error(errno) :
+						push(head, tmp);
+					free(tmp);
+				}
 			}
 			free(path);
 		}

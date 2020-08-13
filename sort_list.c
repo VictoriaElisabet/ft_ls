@@ -26,14 +26,15 @@ t_list	*sort_path_time_list(t_list *head, char *tmp)
 		current = head->next;
 		while (current)
 		{
-			if (stat(head->path, &temp1) == -1 ||
-					stat(current->path, &temp2) == -1)
-				print_error(errno);
-			if (temp1.st_mtime < temp2.st_mtime)
+			if (stat(head->path, &temp1) != -1 ||
+					stat(current->path, &temp2) != -1)
 			{
-				tmp = head->path;
-				head->path = current->path;
-				current->path = tmp;
+				if (temp1.st_mtime < temp2.st_mtime)
+				{
+					tmp = head->path;
+					head->path = current->path;
+					current->path = tmp;
+				}
 			}
 			current = current->next;
 		}
