@@ -6,7 +6,7 @@
 /*   By: vgrankul <vgrankul@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/22 11:28:19 by vgrankul          #+#    #+#             */
-/*   Updated: 2020/08/13 16:19:20 by vgrankul         ###   ########.fr       */
+/*   Updated: 2020/08/13 16:26:50 by vgrankul         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,17 +95,14 @@ int			create_arr_data(t_file **filearr, char *path, int *flags,
 	total = 0;
 	while ((test3 = readdir(dir)) != NULL)
 	{
-		if (!(tmp = ft_strjoin(path, test3->d_name)))
+		if (!(tmp = ft_strjoin(path, test3->d_name)) || lstat(tmp, &buf) == -1)
 			print_error(errno);
-		if (lstat(tmp, &buf) != -1)
-		{
-			if (check_a_flag(test3->d_name, flags) == 1)
-				total = total + buf.st_blocks;
-			if (!(filearr[i] = (t_file*)malloc(sizeof(t_file))))
-				print_error(errno);
-			set_file_struct(filearr[i], test3->d_name, &buf, tmp);
-			free(tmp);
-		}
+		if (check_a_flag(test3->d_name, flags) == 1)
+			total = total + buf.st_blocks;
+		if (!(filearr[i] = (t_file*)malloc(sizeof(t_file))))
+			print_error(errno);
+		set_file_struct(filearr[i], test3->d_name, &buf, tmp);
+		free(tmp);
 		i++;
 	}
 	filearr[i] = NULL;
