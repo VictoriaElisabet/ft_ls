@@ -42,7 +42,7 @@ int		create_argv_list(t_list **begin, char **argv, int i, int *flags)
 				push(begin, argv[i]);
 		}
 		else
-			ft_printf("ft_ls: cannot access '%s': %s", argv[i], strerror(errno));
+			ft_printf("ft_ls: cannot access '%s': %s\n", argv[i], strerror(errno));
 		
 		i++;
 	}
