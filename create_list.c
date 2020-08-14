@@ -6,7 +6,7 @@
 /*   By: vgrankul <vgrankul@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/22 11:28:19 by vgrankul          #+#    #+#             */
-/*   Updated: 2020/08/12 15:25:29 by vgrankul         ###   ########.fr       */
+/*   Updated: 2020/08/14 16:39:39 by vgrankul         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,15 +26,13 @@ void	get_path_list(t_list **head, char *basepath, int *flags, char *tmp)
 		{
 			if (!(path = ft_strjoin(basepath, list->d_name)))
 				print_error(errno);
-			if(lstat(path, &buf) != -1)
-			{
+			if (lstat(path, &buf) != -1)
 				if (S_ISDIR(buf.st_mode) && check_dir(list->d_name, flags) == 1)
 				{
 					!(tmp = ft_strjoin(path, "/")) ? print_error(errno) :
 						push(head, tmp);
 					free(tmp);
 				}
-			}
 			free(path);
 		}
 		if (closedir(dir) == -1)

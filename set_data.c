@@ -6,7 +6,7 @@
 /*   By: vgrankul <vgrankul@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/22 11:28:19 by vgrankul          #+#    #+#             */
-/*   Updated: 2020/08/12 18:17:38 by vgrankul         ###   ########.fr       */
+/*   Updated: 2020/08/14 16:09:23 by vgrankul         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,8 +91,9 @@ char	*set_linked_name(char *path, struct stat *buf)
 		if ((len = readlink(path, tmp, buf->st_size)) < 0)
 		{
 			free(tmp);
-			ft_printf("./ft_ls: cannot read symbolic link '%s': %s\n",path, strerror(errno));
-			return(NULL);
+			ft_printf("./ft_ls: cannot read symbolic link '%s': %s\n",
+			path, strerror(errno));
+			return (NULL);
 		}
 		else
 			tmp[len] = '\0';

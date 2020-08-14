@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   sort_list.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vgrankul <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: vgrankul <vgrankul@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/22 11:28:19 by vgrankul          #+#    #+#             */
-/*   Updated: 2019/10/31 13:49:20 by vgrankul         ###   ########.fr       */
+/*   Updated: 2020/08/14 17:29:21 by vgrankul         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,15 +27,13 @@ t_list	*sort_path_time_list(t_list *head, char *tmp)
 		while (current)
 		{
 			if (stat(head->path, &temp1) != -1 ||
-					stat(current->path, &temp2) != -1)
-			{
+			stat(current->path, &temp2) != -1)
 				if (temp1.st_mtime < temp2.st_mtime)
 				{
 					tmp = head->path;
 					head->path = current->path;
 					current->path = tmp;
 				}
-			}
 			current = current->next;
 		}
 		head = head->next;

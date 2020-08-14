@@ -6,7 +6,7 @@
 /*   By: vgrankul <vgrankul@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/22 11:28:19 by vgrankul          #+#    #+#             */
-/*   Updated: 2020/08/12 18:03:04 by vgrankul         ###   ########.fr       */
+/*   Updated: 2020/08/14 16:22:47 by vgrankul         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,8 +42,7 @@ int		create_argv_list(t_list **begin, char **argv, int i, int *flags)
 				push(begin, argv[i]);
 		}
 		else
-			ft_printf("ft_ls: cannot access '%s': %s\n", argv[i], strerror(errno));
-		
+			ft_printf("ft_ls: %s: %s\n", argv[i], strerror(errno));
 		i++;
 	}
 	if (reg_files != NULL)
