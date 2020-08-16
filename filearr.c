@@ -97,7 +97,7 @@ int			create_arr_data(t_file **filearr, char *path, int *flags,
 	{
 		if (!(tmp = ft_strjoin(path, test3->d_name)))
 			print_error(errno);
-		if (lstat(tmp, &buf) != -1)
+		if ((lstat(tmp, &buf)) != -1)
 		{
 			if (check_a_flag(test3->d_name, flags) == 1)
 				total = total + buf.st_blocks;

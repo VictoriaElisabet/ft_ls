@@ -21,14 +21,13 @@ t_list	*sort_path_time_list(t_list *head, char *tmp)
 	struct stat	temp2;
 
 	begin = head;
-	while (head)
+	while (head != NULL)
 	{
 		current = head->next;
-		while (current)
+		while (current != NULL)
 		{
-			if (stat(head->path, &temp1) != -1 ||
-			stat(current->path, &temp2) != -1)
-				if (temp1.st_mtime > temp2.st_mtime)
+			if ((stat(head->path, &temp1)) != -1 && (stat(current->path, &temp2)) != -1)
+				if (temp1.st_mtime < temp2.st_mtime)
 				{
 					tmp = head->path;
 					head->path = current->path;

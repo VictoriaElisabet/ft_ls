@@ -24,6 +24,8 @@
 # include <grp.h>
 # include <time.h>
 # include <stdio.h>
+//ska dehä va jä
+ #include <sys/sysmacros.h>
 
 # define A_FLAG		1
 # define L_FLAG 	2
