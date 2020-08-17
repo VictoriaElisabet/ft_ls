@@ -24,7 +24,7 @@
 # include <grp.h>
 # include <time.h>
 # include <stdio.h>
-#include <sys/sysmacros.h>
+# include <sys/sysmacros.h>
 
 # define A_FLAG		1
 # define L_FLAG 	2
@@ -81,7 +81,7 @@ void			recursive_list(char *basepath, int *flags);
 void			create_arr(char *path, int *flags);
 void			get_path_list(t_list **head, char *basepath,
 				int *flags, char *tmp);
-void			sort_argv_list(t_list *head, int *flags, int i);
+void			sort_argv_list(t_list *head, int *flags, int i, char *tmp);
 void			destroy_filearr(t_file **filearr);
 void			print_reg_files(t_list *reg_files, int *flags);
 

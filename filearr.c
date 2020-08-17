@@ -108,8 +108,6 @@ int			create_arr_data(t_file **filearr, char *path, int *flags,
 		}
 	}
 	filearr[i] = NULL;
-	if (closedir(dir) == -1)
-		print_error(errno);
 	return (total);
 }
 
@@ -126,8 +124,10 @@ void		create_arr(char *path, int *flags)
 		malloc(count_files(path) * sizeof(t_file*) + 1)))
 			print_error(errno);
 		total = create_arr_data(filearr, path, flags, dir);
+		if (closedir(dir) == -1)
+			print_error(errno);
 		sort_arr_name(filearr);
-		if (*flags & T_FLAG) 
+		if (*flags & T_FLAG)
 			sort_mod_arr_name(filearr);
 		if (*flags & R_FLAG)
 			sort_rev_arr_name(filearr);

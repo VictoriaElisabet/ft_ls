@@ -53,14 +53,12 @@ int		create_argv_list(t_list **begin, char **argv, int i, int *flags)
 	return (i);
 }
 
-void	sort_argv_list(t_list *head, int *flags, int i)
+void	sort_argv_list(t_list *head, int *flags, int i, char *tmp)
 {
 	t_list	*sort;
-	char	*tmp;
 
-	tmp = NULL;
 	sort = sort_path_list(head);
-	if (*flags & T_FLAG) 
+	if (*flags & T_FLAG)
 		sort = sort_path_time_list(head, tmp);
 	if (*flags & R_FLAG)
 		sort = sort_rev_path_list(head);
@@ -87,7 +85,9 @@ void	check_argv(char **argv, int *flags)
 {
 	int		i;
 	t_list	*begin;
+	char	*tmp;
 
+	tmp = NULL;
 	i = 1;
 	begin = NULL;
 	while (argv[i] != NULL)
@@ -99,5 +99,5 @@ void	check_argv(char **argv, int *flags)
 		i++;
 	}
 	i = create_argv_list(&begin, argv, i, flags) - i;
-	sort_argv_list(begin, flags, i);
+	sort_argv_list(begin, flags, i, tmp);
 }
