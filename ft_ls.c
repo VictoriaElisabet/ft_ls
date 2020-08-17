@@ -33,8 +33,9 @@ void	recursive_list(char *basepath, int *flags)
 	if (*flags & RE_FLAG)
 	{
 		get_path_list(&head, basepath, flags, tmp1);
-		(*flags & T_FLAG) ? (sort = sort_path_time_list(head, tmp)) :
-			(sort = sort_path_list(head));
+		sort = sort_path_list(head);
+		if (*flags & T_FLAG) 
+			sort = sort_path_time_list(head, tmp);
 		if (*flags & R_FLAG)
 			sort = sort_rev_path_list(head);
 		while (sort != NULL)

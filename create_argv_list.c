@@ -59,8 +59,9 @@ void	sort_argv_list(t_list *head, int *flags, int i)
 	char	*tmp;
 
 	tmp = NULL;
-	(*flags & T_FLAG) ? (sort = sort_path_time_list(head, tmp)) :
-		(sort = sort_path_list(head));
+	sort = sort_path_list(head);
+	if (*flags & T_FLAG) 
+		sort = sort_path_time_list(head, tmp);
 	if (*flags & R_FLAG)
 		sort = sort_rev_path_list(head);
 	while (sort != NULL)

@@ -24,8 +24,7 @@
 # include <grp.h>
 # include <time.h>
 # include <stdio.h>
-//ska dehä va jä
- #include <sys/sysmacros.h>
+#include <sys/sysmacros.h>
 
 # define A_FLAG		1
 # define L_FLAG 	2
@@ -49,7 +48,7 @@ typedef struct	s_file
 	long	size;
 	char	*time;
 	char	*filename;
-	long	mod_time;
+	time_t	mod_time;
 	char	*linked_name;
 	int		minor;
 	int		major;

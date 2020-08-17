@@ -74,8 +74,9 @@ void	print_reg_files(t_list *reg_files, int *flags)
 	t_file		**filearr;
 
 	tmp = NULL;
-	(*flags & T_FLAG) ? (sort = sort_path_time_list(reg_files, tmp)) :
-		(sort = sort_path_list(reg_files));
+	sort = sort_path_list(reg_files);
+	if (*flags & T_FLAG) 
+		sort = sort_path_time_list(reg_files, tmp);
 	if (*flags & R_FLAG)
 		sort = sort_rev_path_list(reg_files);
 	if (*flags & L_FLAG)

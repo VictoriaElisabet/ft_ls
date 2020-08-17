@@ -70,10 +70,6 @@ void	print_files(t_file **filearr, unsigned int total, int *flags)
 
 	i = 0;
 	set_maxlen(filearr, size, flags);
-	while (filearr[i] != NULL && check_a_flag(filearr[i]->filename, flags) != 1
-	&& (ft_strcmp(filearr[i]->filename, ".") == 0 ||
-	ft_strcmp(filearr[i]->filename, "..") == 0))
-		i++;
 	if ((filearr[i] != NULL && (*flags & L_FLAG)))
 		ft_printf("total %d\n", total);
 	while (filearr[i] != NULL)

@@ -36,8 +36,8 @@ void	sort_arr_name(t_file **arr)
 		j = i;
 		while (arr[j + 1] != NULL)
 		{
-			str1 = ft_strdup(arr[i]->filename);
-			str2 = ft_strdup(arr[j + 1]->filename);
+			str1 = ft_string_tolower(ft_strdup(arr[i]->filename));
+			str2 = ft_string_tolower(ft_strdup(arr[j + 1]->filename));
 			if (ft_strcmp(str1, str2) > 0)
 				swap_files(arr, i, j);
 			free(str1);
