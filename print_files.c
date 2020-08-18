@@ -40,23 +40,23 @@ void	set_maxlen(t_file **filearr, int max_size[4], int *flags)
 
 void	print_list(t_file *filearr, int size[4])
 {
-	if (filearr->linked_name != NULL && (filearr->permissions[0] == 'c' ||
+	if (filearr->linkname != NULL && (filearr->permissions[0] == 'c' ||
 	filearr->permissions[0] == 'b'))
 		ft_printf("%s %*d %*s %*s %*d,%*d %s %s -> %s\n",
 		filearr->permissions, size[0], filearr->links, size[2], filearr->uid,
 		size[3], filearr->guid, 4, filearr->major, 4, filearr->minor,
-		filearr->time, filearr->filename, filearr->linked_name);
-	else if (filearr->linked_name == NULL && (filearr->permissions[0] == 'c' ||
+		filearr->time, filearr->filename, filearr->linkname);
+	else if (filearr->linkname == NULL && (filearr->permissions[0] == 'c' ||
 	filearr->permissions[0] == 'b'))
 		ft_printf("%s %*d %*s %*s %*d,%*d %s %s\n",
 		filearr->permissions, size[0], filearr->links, size[2],
 		filearr->uid, size[3], filearr->guid, 4, filearr->major,
 		4, filearr->minor, filearr->time, filearr->filename);
-	else if (filearr->linked_name != NULL)
+	else if (filearr->linkname != NULL)
 		ft_printf("%s %*d %*s %*s %*ld %s %s -> %s\n",
 		filearr->permissions, size[0], filearr->links, size[2],
 		filearr->uid, size[3], filearr->guid, size[1], filearr->size,
-		filearr->time, filearr->filename, filearr->linked_name);
+		filearr->time, filearr->filename, filearr->linkname);
 	else
 		ft_printf("%s %*d %*s %*s %*ld %s %s\n", filearr->permissions,
 		size[0], filearr->links, size[2], filearr->uid, size[3], filearr->guid,

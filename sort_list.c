@@ -13,7 +13,8 @@
 #include "./libft/libft.h"
 #include "ft_ls.h"
 
-int		sort_path_time(t_list *head, t_list *current, struct stat *temp1, struct stat *temp2)
+int		sort_path_time(t_list *head, t_list *current, struct stat *temp1,
+struct stat *temp2)
 {
 	char	*str1;
 	char	*str2;

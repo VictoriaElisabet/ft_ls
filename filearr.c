@@ -32,8 +32,7 @@ void		set_file_struct(t_file *file, char *filename,
 		file->guid = ft_itoa(buf->st_gid);
 	else
 		file->guid = ft_strdup(groupid->gr_name);
-	file->linked_name = S_ISLNK(buf->st_mode) ? set_linked_name(path, buf) :
-	NULL;
+	file->linkname = S_ISLNK(buf->st_mode) ? set_linked_name(path, buf) : NULL;
 	file->path = ft_strdup(path);
 	file->permissions = set_file_perm(buf);
 	file->links = buf->st_nlink;
@@ -69,8 +68,8 @@ void		destroy_filearr(t_file **filearr)
 	i = 0;
 	while (filearr[i] != NULL)
 	{
-		if (filearr[i]->linked_name != NULL)
-			free(filearr[i]->linked_name);
+		if (filearr[i]->linkname != NULL)
+			free(filearr[i]->linkname);
 		free(filearr[i]->time);
 		free(filearr[i]->permissions);
 		free(filearr[i]->uid);
@@ -109,7 +108,7 @@ int			create_arr_data(t_file **filearr, char *path, int *flags,
 		}
 	}
 	filearr[i] = NULL;
-	return (total);
+	return (total / 2);
 }
 
 void		create_arr(char *path, int *flags)
