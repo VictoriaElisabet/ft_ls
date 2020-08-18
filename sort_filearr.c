@@ -53,19 +53,27 @@ int		sort_mod(t_file **arr, int i, int j)
 	char	*str1;
 	char	*str2;
 
-	str1 = ft_string_tolower(ft_strdup(arr[i]->filename));
-	str2 = ft_string_tolower(ft_strdup(arr[j + 1]->filename));
 	if (arr[i]->mod_time < arr[j + 1]->mod_time)
 		return (1);
 	else if (arr[i]->mod_time == arr[j + 1]->mod_time)
 	{
+		str1 = ft_string_tolower(ft_strdup(arr[i]->filename));
+		str2 = ft_string_tolower(ft_strdup(arr[j + 1]->filename));
 		if (arr[i]->nmod_time < arr[j + 1]->nmod_time)
+		{
+			free(str1);
+			free(str2);
 			return (1);
+		}
 		else if (ft_strcmp(str1, str2) > 0)
+		{
+			free(str1);
+			free(str2);
 			return (1);
+		}
+		free(str1);
+		free(str2);
 	}
-	free(str1);
-	free(str2);
 	return (0);
 }
 
