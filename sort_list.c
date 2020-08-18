@@ -13,6 +13,27 @@
 #include "./libft/libft.h"
 #include "ft_ls.h"
 
+int		sort_path_time(t_list *head, t_list *current, struct stat *temp1, struct stat *temp2)
+{
+	char	*str1;
+	char	*str2;
+
+	str1 = ft_string_tolower(ft_strdup(head->path));
+	str2 = ft_string_tolower(ft_strdup(current->path));
+	if (temp1->st_mtime < temp2->st_mtime)
+		return (1);
+	else if (temp1->st_mtime == temp2->st_mtime)
+	{
+		if (temp1->st_mtim.tv_nsec < temp2->st_mtim.tv_nsec)
+			return (1);
+		else if (ft_strcmp(str1, str2) > 0)
+			return (1);
+	}
+	free(str1);
+	free(str2);
+	return (0);
+}
+
 t_list	*sort_path_time_list(t_list *head, char *tmp)
 {
 	t_list		*begin;
@@ -28,7 +49,7 @@ t_list	*sort_path_time_list(t_list *head, char *tmp)
 		{
 			if ((stat(head->path, &temp1)) != -1 &&
 			(stat(current->path, &temp2)) != -1)
-				if (temp1.st_mtime < temp2.st_mtime)
+				if (sort_path_time(head, current, &temp1, &temp2) == 1)
 				{
 					tmp = head->path;
 					head->path = current->path;

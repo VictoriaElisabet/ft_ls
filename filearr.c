@@ -41,6 +41,7 @@ void		set_file_struct(t_file *file, char *filename,
 	file->time = set_time(buf->st_mtime);
 	file->filename = ft_strdup(filename);
 	file->mod_time = buf->st_mtime;
+	file->nmod_time = buf->st_mtim.tv_nsec;
 }
 
 static int	count_files(char *path)

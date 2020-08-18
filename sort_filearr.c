@@ -48,6 +48,27 @@ void	sort_arr_name(t_file **arr)
 	}
 }
 
+int		sort_mod(t_file **arr, int i, int j)
+{
+	char	*str1;
+	char	*str2;
+
+	str1 = ft_string_tolower(ft_strdup(arr[i]->filename));
+	str2 = ft_string_tolower(ft_strdup(arr[j + 1]->filename));
+	if (arr[i]->mod_time < arr[j + 1]->mod_time)
+		return (1);
+	else if (arr[i]->mod_time == arr[j + 1]->mod_time)
+	{
+		if (arr[i]->nmod_time < arr[j + 1]->nmod_time)
+			return (1);
+		else if (ft_strcmp(str1, str2) > 0)
+			return (1);
+	}
+	free(str1);
+	free(str2);
+	return (0);
+}
+
 void	sort_mod_arr_name(t_file **arr)
 {
 	int		i;
@@ -60,7 +81,7 @@ void	sort_mod_arr_name(t_file **arr)
 		j = i;
 		while (arr[j + 1] != NULL)
 		{
-			if (arr[i]->mod_time < arr[j + 1]->mod_time)
+			if (sort_mod(arr, i, j) == 1)
 				swap_files(arr, i, j);
 			j++;
 		}

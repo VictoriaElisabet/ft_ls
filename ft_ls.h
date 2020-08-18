@@ -25,6 +25,9 @@
 # include <time.h>
 # include <stdio.h>
 # include <sys/sysmacros.h>
+# include <bits/types/struct_timespec.h>
+
+ //# define st_mtime st_mtim.tv_sec
 
 # define A_FLAG		1
 # define L_FLAG 	2
@@ -49,6 +52,7 @@ typedef struct	s_file
 	char	*time;
 	char	*filename;
 	time_t	mod_time;
+	long	nmod_time;
 	char	*linked_name;
 	int		minor;
 	int		major;
